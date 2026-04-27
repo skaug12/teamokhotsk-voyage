@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>팀 오호츠크 항해일지</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" rel="stylesheet">
+<style>
+  :root {
+    --bg-0: #050a18;
+    --bg-1: #0a1428;
+    --bg-2: #0e1f3a;
+    --card: rgba(20, 40, 70, 0.45);
+    --card-strong: rgba(30, 56, 96, 0.6);
+    --border: rgba(120, 170, 230, 0.14);
+    --border-strong: rgba(140, 200, 255, 0.28);
+    --text: #e8f4f8;
+    --text-dim: #93a8c2;
+    --text-faint: #5e7795;
+    --ice: #67e8f9;
+    --ice-deep: #4dd4e6;
+    --aurora-1: #7c5cff;
+    --aurora-2: #a78bfa;
+    --aurora-3: #ec4899;
+    --gold: #fbbf24;
+    --gold-soft: #fde68a;
+    --gain: #34d399;
+    --loss: #f87171;
+    --silver: #cbd5e1;
+    --bronze: #d97706;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg-0);
+    color: var(--text);
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-feature-settings: 'tnum';
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(124,92,255,0.18), transparent 55%),
+      radial-gradient(ellipse at 90% 10%, rgba(77,212,230,0.12), transparent 50%),
+      radial-gradient(ellipse at 50% 100%, rgba(236,72,153,0.10), transparent 60%),
+      linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 50%, var(--bg-0) 100%);
+    background-attachment: fixed;
+    position: relative;
+  }
+
+  /* 별이 흐르는 밤하늘 */
+  .stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, #fff, transparent),
+      radial-gradient(1px 1px at 28% 72%, #cbd5e1, transparent),
+      radial-gradient(1.5px 1.5px at 45% 32%, #fff, transparent),
+      radial-gradient(1px 1px at 67% 88%, #a5b4fc, transparent),
+      radial-gradient(1.2px 1.2px at 82% 24%, #fff, transparent),
+      radial-gradient(1px 1px at 91% 56%, #67e8f9, transparent),
+      radial-gradient(1px 1px at 7% 47%, #fde68a, transparent),
+      radial-gradient(1.4px 1.4px at 38% 11%, #fff, transparent),
+      radial-gradient(1px 1px at 56% 64%, #fff, transparent),
+      radial-gradient(1px 1px at 73% 8%, #fff, transparent);
+    background-size: 100% 100%;
+    opacity: 0.55;
+    animation: twinkle 6s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle {
+    from { opacity: 0.35; }
+    to   { opacity: 0.65; }
+  }
+
+  /* 오로라 리본 */
+  .aurora {
+    position: fixed;
+    top: -10%;
+    left: -10%;
+    right: -10%;
+    height: 60vh;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(50% 60% at 30% 40%, rgba(124,92,255,0.22), transparent 70%),
+      radial-gradient(40% 60% at 70% 30%, rgba(77,212,230,0.18), transparent 70%),
+      radial-gradient(40% 60% at 50% 60%, rgba(236,72,153,0.12), transparent 70%);
+    filter: blur(40px);
+    animation: aurora 14s ease-in-out infinite alternate;
+  }
+  @keyframes aurora {
+    0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0.9; }
+    50%  { transform: translate3d(-3%, 2%, 0) scale(1.08); opacity: 1; }
+    100% { transform: translate3d(2%, -1%, 0) scale(1.04); opacity: 0.85; }
+  }
+
+  /* 둥둥 떠다니는 빙하 */
+  .iceberg {
+    position: fixed;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.18;
+    animation: float 18s ease-in-out infinite;
+  }
+  .iceberg.b1 { top: 30%; left: -4%; animation-delay: 0s; }
+  .iceberg.b2 { top: 70%; right: -5%; animation-delay: -6s; opacity: 0.12; }
+  .iceberg.b3 { top: 55%; left: 75%; animation-delay: -12s; opacity: 0.1; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-14px) rotate(2deg); }
+  }
+
+  main, header { position: relative; z-index: 1; }
+
+  /* ========== Layout ========== */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 28px 80px;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .brand .logo {
+    width: 56px; height: 56px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--aurora-1), var(--aurora-3) 60%, var(--ice));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 22px;
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(124,92,255,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+    position: relative;
+  }
+  .brand .logo::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, var(--aurora-1), var(--ice));
+    z-index: -1;
+    opacity: 0.4;
+    filter: blur(6px);
+  }
+  .brand h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .brand h1 .accent {
+    background: linear-gradient(90deg, var(--ice), var(--aurora-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .brand p {
+    font-size: 12px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .header-meta .pulse {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gain);
+    box-shadow: 0 0 0 0 rgba(52,211,153,0.6);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(52,211,153,0.7); }
+    70%  { box-shadow: 0 0 0 10px rgba(52,211,153,0); }
+    100% { box-shadow: 0 0 0 0 rgba(52,211,153,0); }
+  }
+
+  /* ========== KPI ========== */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .kpi {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 22px 22px 20px;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .kpi:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-strong);
+  }
+  .kpi::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent-grad, linear-gradient(135deg, var(--ice), var(--aurora-1)));
+    opacity: 0.06;
+    pointer-events: none;
+  }
+  .kpi .top-stripe {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent-grad);
+  }
+  .kpi .label {
+    font-size: 12px;
+    color: var(--text-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .kpi .label .icon {
+    font-size: 14px;
+    filter: grayscale(0.2);
+  }
+  .kpi .value {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+    line-height: 1.1;
+  }
+  .kpi .sub {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .kpi.gain .value { color: var(--gain); }
+  .kpi.loss .value { color: var(--loss); }
+  .kpi.gold .value {
+    background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .kpi.member .value { color: var(--ice); }
+
+  /* sparkle for top1 */
+  .sparkle {
+    position: absolute;
+    width: 6px; height: 6px;
+    background: #fff;
+    border-radius: 50%;
+    filter: blur(0.5px);
+    animation: sparkle 3s linear infinite;
+    opacity: 0;
+  }
+  @keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50%      { opacity: 1; transform: scale(1.2); }
+  }
+
+  /* ========== Voyage Map ========== */
+  .voyage-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px 28px 32px;
+    margin-bottom: 28px;
+    backdrop-filter: blur(8px);
+    overflow: hidden;
+    position: relative;
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .section-title .dot {
+    width: 6px; height: 6px;
+    background: var(--ice);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--ice);
+  }
+  .section-title .badge-mini {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+  }
+
+  .voyage-map {
+    position: relative;
+    height: 180px;
+    margin: 8px 0 4px;
+  }
+  .voyage-map svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .port {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 2;
+  }
+  .port .marker {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-2);
+    border: 2px solid var(--border-strong);
+    color: var(--text-dim);
+    font-weight: 700;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+  }
+  .port.done .marker {
+    background: linear-gradient(135deg, var(--aurora-1), var(--aurora-2));
+    border-color: rgba(167,139,250,0.6);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(124,92,255,0.4);
+  }
+  .port.active .marker {
+    background: linear-gradient(135deg, var(--gain), var(--ice));
+    border-color: rgba(103,232,249,0.6);
+    color: #062a1d;
+    box-shadow: 0 0 0 4px rgba(52,211,153,0.18), 0 6px 20px rgba(52,211,153,0.45);
+    animation: activePulse 2.4s ease-in-out infinite;
+  }
+  .port.future .marker {
+    background: var(--bg-1);
+    border-style: dashed;
+    color: var(--text-faint);
+  }
+  @keyframes activePulse {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(52,211,153,0.18), 0 6px 20px rgba(52,211,153,0.45); }
+    50%      { box-shadow: 0 0 0 10px rgba(52,211,153,0.05), 0 6px 24px rgba(52,211,153,0.6); }
+  }
+  .port .meta {
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+  }
+  .port .ticker {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-weight: 600;
+  }
+  .port.active .ticker { color: var(--text); }
+  .port .pct {
+    margin-top: 2px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .port .pct.pos { color: var(--gain); }
+  .port .pct.neg { color: var(--loss); }
+
+  /* 항해 중인 배 */
+  .ship {
+    position: absolute;
+    transform: translate(-50%, -130%);
+    z-index: 3;
+    font-size: 28px;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+    animation: bobShip 3s ease-in-out infinite;
+  }
+  @keyframes bobShip {
+    0%, 100% { transform: translate(-50%, -130%) rotate(-2deg); }
+    50%      { transform: translate(-50%, -136%) rotate(2deg); }
+  }
+
+  /* ========== Round Tabs ========== */
+  .round-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .round-tab {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: var(--text-dim);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .round-tab:hover { border-color: var(--border-strong); color: var(--text); }
+  .round-tab.active {
+    background: linear-gradient(135deg, var(--aurora-1), var(--aurora-2));
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 6px 18px rgba(124,92,255,0.35);
+  }
+  .round-tab.active .live-dot {
+    width: 6px; height: 6px;
+    background: var(--gain);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--gain);
+  }
+  .round-tab .live-dot { display: none; }
+  .round-tab.live .live-dot { display: inline-block; }
+
+  /* ========== Round Detail ========== */
+  .round-detail {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px 28px;
+    margin-bottom: 28px;
+    backdrop-filter: blur(8px);
+  }
+  .round-detail h2 {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  .ticker-card {
+    background: var(--card-strong);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 22px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 18px;
+    align-items: center;
+  }
+  .ticker-badge {
+    background: linear-gradient(135deg, var(--aurora-1), var(--aurora-2));
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    letter-spacing: 0.02em;
+  }
+  .ticker-info .name {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .ticker-info .sector {
+    font-size: 12px;
+    color: var(--text-faint);
+  }
+  .ticker-price {
+    text-align: right;
+  }
+  .ticker-price .price {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .ticker-price .price.loss { color: var(--loss); }
+  .ticker-price .price.gain { color: var(--gain); }
+  .ticker-price .change {
+    font-size: 13px;
+    margin-top: 2px;
+  }
+  .ticker-price .change.loss { color: var(--loss); }
+  .ticker-price .change.gain { color: var(--gain); }
+
+  .ticker-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .ticker-stat {
+    background: rgba(10, 22, 42, 0.5);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .ticker-stat .label {
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+  .ticker-stat .val {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .decision-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .decision-btn {
+    padding: 11px;
+    text-align: center;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    background: rgba(10, 22, 42, 0.4);
+    color: var(--text-faint);
+  }
+  .decision-btn.active {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(251,191,36,0.06);
+  }
+  .decision-btn.strong-buy.active { border-color: var(--gain); color: var(--gain); background: rgba(52,211,153,0.06); }
+  .decision-btn.sell.active       { border-color: var(--loss); color: var(--loss); background: rgba(248,113,113,0.06); }
+
+  .opinion {
+    background: rgba(251,191,36,0.06);
+    border-left: 3px solid var(--gold);
+    border-radius: 4px 12px 12px 4px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+  .opinion strong { color: var(--gold-soft); }
+
+  .news-title {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .news-list { display: flex; flex-direction: column; gap: 0; }
+  .news-item {
+    display: grid;
+    grid-template-columns: 16px 1fr auto;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+  .news-item:last-child { border-bottom: none; }
+  .news-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-top: 6px;
+  }
+  .news-dot.red    { background: var(--loss); }
+  .news-dot.yellow { background: var(--gold); }
+  .news-dot.green  { background: var(--gain); }
+  .news-text .title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .news-text .detail { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+  .news-date { font-size: 11px; color: var(--text-faint); white-space: nowrap; }
+
+  /* ========== Round Members Table ========== */
+  .round-members {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px 28px;
+    margin-bottom: 28px;
+    backdrop-filter: blur(8px);
+    overflow-x: auto;
+  }
+  .round-members table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .round-members thead th {
+    text-align: right;
+    padding: 12px 10px;
+    font-weight: 500;
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  .round-members thead th:first-child { text-align: left; }
+  .round-members tbody td {
+    padding: 14px 10px;
+    text-align: right;
+    border-bottom: 1px solid rgba(120,170,230,0.06);
+  }
+  .round-members tbody td:first-child { text-align: left; }
+  .round-members tbody tr:hover { background: rgba(124,92,255,0.04); }
+  .round-members .skip { color: var(--text-faint); font-size: 12px; }
+
+  .member-cell { display: flex; align-items: center; gap: 10px; }
+  .avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .avatar.c-1 { background: rgba(167,139,250,0.18); color: #c4b5fd; }
+  .avatar.c-2 { background: rgba(103,232,249,0.18); color: #67e8f9; }
+  .avatar.c-3 { background: rgba(251,191,36,0.18); color: #fde68a; }
+  .avatar.c-4 { background: rgba(52,211,153,0.18); color: #6ee7b7; }
+  .avatar.c-5 { background: rgba(236,72,153,0.18); color: #f9a8d4; }
+  .avatar.c-6 { background: rgba(248,113,113,0.18); color: #fca5a5; }
+
+  .pct-pill {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .pct-pill.gain { background: rgba(52,211,153,0.16); color: var(--gain); }
+  .pct-pill.loss { background: rgba(248,113,113,0.16); color: var(--loss); }
+  .pct-pill.zero { background: rgba(150,180,210,0.12); color: var(--text-dim); }
+
+  /* ========== 3-Col Section ========== */
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .three-col .panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 22px 24px;
+    backdrop-filter: blur(8px);
+  }
+  .alloc-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 0;
+  }
+  .alloc-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+  .alloc-name { font-size: 13px; color: var(--text); }
+  .alloc-name b { font-weight: 700; margin-right: 4px; }
+  .alloc-bar {
+    grid-column: 2 / 3;
+    height: 6px;
+    background: rgba(120,170,230,0.08);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .alloc-bar > span {
+    display: block;
+    height: 100%;
+    border-radius: 99px;
+    width: 0;
+    transition: width 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .alloc-pct { font-size: 13px; color: var(--text-dim); font-weight: 600; min-width: 50px; text-align: right; }
+
+  .alloc-bar-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+
+  .top-row {
+    display: grid;
+    grid-template-columns: 28px auto 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(120,170,230,0.06);
+  }
+  .top-row:last-child { border-bottom: none; }
+  .top-rank {
+    font-size: 11px;
+    color: var(--text-faint);
+    text-align: center;
+    font-weight: 700;
+  }
+  .top-rank.medal-1 { color: var(--gold); font-size: 16px; }
+  .top-rank.medal-2 { color: var(--silver); font-size: 16px; }
+  .top-rank.medal-3 { color: var(--bronze); font-size: 16px; }
+  .top-name { font-size: 13px; }
+  .top-bar {
+    grid-column: 3 / 4;
+    height: 4px;
+    background: rgba(120,170,230,0.08);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .top-bar > span {
+    display: block;
+    height: 100%;
+    width: 0;
+    transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .top-val { font-size: 12px; font-weight: 600; min-width: 70px; text-align: right; }
+
+  /* ========== Ranking Section ========== */
+  .ranking {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px 28px 28px;
+    backdrop-filter: blur(8px);
+    overflow-x: auto;
+  }
+  .crew-card {
+    display: grid;
+    grid-template-columns: 60px auto 1fr auto;
+    gap: 18px;
+    padding: 18px 18px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    margin-bottom: 10px;
+    background: rgba(10, 22, 42, 0.4);
+    transition: all 0.25s ease;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .crew-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--rank-grad, transparent);
+    opacity: 0.05;
+    pointer-events: none;
+  }
+  .crew-card:hover {
+    border-color: var(--border-strong);
+    transform: translateX(2px);
+    background: rgba(20, 40, 70, 0.5);
+  }
+  .crew-card.rank-1 { border-color: rgba(251,191,36,0.4); --rank-grad: linear-gradient(90deg, var(--gold), transparent); }
+  .crew-card.rank-2 { border-color: rgba(203,213,225,0.3); --rank-grad: linear-gradient(90deg, var(--silver), transparent); }
+  .crew-card.rank-3 { border-color: rgba(217,119,6,0.35); --rank-grad: linear-gradient(90deg, var(--bronze), transparent); }
+  .crew-card.skip { opacity: 0.55; }
+
+  .crew-rank {
+    font-size: 28px;
+    font-weight: 800;
+    text-align: center;
+    color: var(--text-faint);
+    line-height: 1;
+  }
+  .crew-rank.medal-1 { color: var(--gold); }
+  .crew-rank.medal-2 { color: var(--silver); }
+  .crew-rank.medal-3 { color: var(--bronze); }
+  .crew-rank .medal-emoji {
+    display: block;
+    font-size: 20px;
+    margin-top: 2px;
+  }
+
+  .crew-info { min-width: 0; }
+  .crew-info .name-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .crew-info .name {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .crew-info .level {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(124,92,255,0.12);
+    color: var(--aurora-2);
+    border: 1px solid rgba(167,139,250,0.25);
+    border-radius: 99px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .crew-info .badges {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(20, 40, 70, 0.7);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 7px;
+    font-size: 10.5px;
+    color: var(--text-dim);
+    letter-spacing: 0.02em;
+  }
+  .badge.gold   { color: var(--gold-soft); border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.07); }
+  .badge.purple { color: var(--aurora-2); border-color: rgba(167,139,250,0.3); background: rgba(124,92,255,0.07); }
+  .badge.ice    { color: var(--ice); border-color: rgba(103,232,249,0.3); background: rgba(77,212,230,0.07); }
+  .badge.silver { color: var(--silver); border-color: rgba(203,213,225,0.25); background: rgba(203,213,225,0.05); }
+  .badge.bronze { color: #fbbf80; border-color: rgba(217,119,6,0.3); background: rgba(217,119,6,0.07); }
+
+  .crew-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .crew-bar .bar-track {
+    height: 8px;
+    background: rgba(120,170,230,0.08);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .crew-bar .bar-fill {
+    display: block;
+    height: 100%;
+    border-radius: 99px;
+    width: 0;
+    transition: width 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .crew-bar .bar-fill.gain { background: linear-gradient(90deg, var(--gain), var(--ice)); }
+  .crew-bar .bar-fill.loss { background: linear-gradient(90deg, var(--loss), #fb7185); }
+  .crew-bar .bar-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-faint);
+  }
+  .crew-bar .bar-meta .ticker-chips {
+    display: flex;
+    gap: 4px;
+  }
+  .ticker-chip {
+    background: rgba(120,170,230,0.08);
+    color: var(--text-dim);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  .crew-numbers {
+    text-align: right;
+    font-feature-settings: 'tnum';
+    min-width: 130px;
+  }
+  .crew-numbers .pct {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .crew-numbers .pct.gain { color: var(--gain); }
+  .crew-numbers .pct.loss { color: var(--loss); }
+  .crew-numbers .pct.zero { color: var(--text-dim); }
+  .crew-numbers .money {
+    font-size: 12px;
+    color: var(--text-faint);
+  }
+
+  /* ========== Footer ========== */
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--text-faint);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  footer .compass {
+    font-size: 20px;
+    margin-bottom: 6px;
+    display: inline-block;
+    animation: spin 22s linear infinite;
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /* ========== Responsive ========== */
+  @media (max-width: 920px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .three-col { grid-template-columns: 1fr; }
+    .ticker-stats { grid-template-columns: 1fr; }
+    .decision-row { grid-template-columns: repeat(3, 1fr); }
+    .crew-card { grid-template-columns: 50px 1fr; }
+    .crew-bar, .crew-numbers { grid-column: 1 / 3; text-align: left; }
+    .crew-numbers { display: flex; gap: 12px; align-items: baseline; }
+  }
+  @media (max-width: 560px) {
+    .container { padding: 20px 16px 60px; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .kpi .value { font-size: 24px; }
+    .voyage-map { height: 220px; }
+    .round-tabs { grid-template-columns: repeat(4, 1fr); font-size: 12px; }
+    .round-tab { padding: 10px 6px; font-size: 12px; }
+    .ticker-card { grid-template-columns: auto 1fr; }
+    .ticker-price { grid-column: 1 / 3; text-align: left; margin-top: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="aurora"></div>
+<div class="stars"></div>
+
+<svg class="iceberg b1" width="180" height="120" viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="20,80 60,20 100,40 140,15 170,80" fill="#a5d8e6" opacity="0.7"/>
+  <polygon points="20,80 60,20 80,60 50,75" fill="#67e8f9" opacity="0.5"/>
+  <polygon points="20,80 170,80 160,100 30,100" fill="#4dd4e6" opacity="0.4"/>
+</svg>
+<svg class="iceberg b2" width="200" height="130" viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="20,90 70,30 120,60 160,20 185,90" fill="#a5d8e6" opacity="0.7"/>
+  <polygon points="20,90 185,90 175,108 30,108" fill="#4dd4e6" opacity="0.4"/>
+</svg>
+<svg class="iceberg b3" width="140" height="90" viewBox="0 0 140 90" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="15,65 50,15 90,30 125,65" fill="#a5d8e6" opacity="0.7"/>
+  <polygon points="15,65 125,65 115,80 25,80" fill="#4dd4e6" opacity="0.4"/>
+</svg>
+
+<div class="container">
+
+  <header>
+    <div class="brand">
+      <div class="logo">⚓</div>
+      <div>
+        <h1>팀 <span class="accent">오호츠크</span> 항해일지</h1>
+        <p>HFK INVESTMENT VOYAGE · OKHOTSK CREW</p>
+      </div>
+    </div>
+    <div class="header-meta">
+      <span class="pulse"></span>
+      <span>LIVE · 4월 27일 오후 07:37 갱신</span>
+    </div>
+  </header>
+
+  <!-- KPI -->
+  <section class="kpi-grid">
+    <div class="kpi gain" style="--accent-grad: linear-gradient(135deg, #34d399, #67e8f9);">
+      <div class="top-stripe"></div>
+      <div class="label"><span class="icon">🌊</span>전체 항해 수익률</div>
+      <div class="value" data-count="7.14" data-suffix="%" data-prefix="+">+0.00%</div>
+      <div class="sub">+$375.45 평가 손익</div>
+    </div>
+    <div class="kpi member" style="--accent-grad: linear-gradient(135deg, #7c5cff, #a78bfa);">
+      <div class="top-stripe"></div>
+      <div class="label"><span class="icon">⛵</span>총 출항 자본</div>
+      <div class="value" data-count="5256.63" data-prefix="$">$0.00</div>
+      <div class="sub">9명의 선원이 함께 항해 중</div>
+    </div>
+    <div class="kpi gold" style="--accent-grad: linear-gradient(135deg, #fbbf24, #fde68a);">
+      <div class="top-stripe"></div>
+      <div class="label"><span class="icon">🏆</span>수익률 1등 선원</div>
+      <div class="value" style="font-size: 24px;">이수연 <span style="font-size:18px; color: var(--gain);">+20.14%</span></div>
+      <div class="sub">🐋 범고래 선장 등급 도달</div>
+      <span class="sparkle" style="top:14px; right:18px; animation-delay:0s;"></span>
+      <span class="sparkle" style="top:30px; right:38px; animation-delay:0.8s;"></span>
+      <span class="sparkle" style="top:60px; right:14px; animation-delay:1.6s;"></span>
+    </div>
+    <div class="kpi gold" style="--accent-grad: linear-gradient(135deg, #fbbf24, #ec4899);">
+      <div class="top-stripe"></div>
+      <div class="label"><span class="icon">💰</span>수익금 1등 선원</div>
+      <div class="value" style="font-size: 24px;">김하나 <span style="font-size:18px; color: var(--gain);">+$90.60</span></div>
+      <div class="sub">🐧 펭귄 사진가 · 4종목 보유</div>
+    </div>
+  </section>
+
+  <!-- 항해 지도 -->
+  <section class="voyage-card">
+    <div class="section-title">
+      <span class="dot"></span>
+      <span>항해 지도 · 투자 라운드 진행</span>
+      <span class="badge-mini">1·2회차 완료 · 3회차 항해 중</span>
+    </div>
+    <div class="voyage-map" id="voyageMap">
+      <!-- SVG path drawn via JS -->
+    </div>
+  </section>
+
+  <!-- Round Tabs -->
+  <div class="round-tabs" id="roundTabs">
+    <div class="round-tab" data-round="1">1회차</div>
+    <div class="round-tab" data-round="2">2회차</div>
+    <div class="round-tab active live" data-round="3">3회차 <span class="live-dot"></span></div>
+    <div class="round-tab" data-round="4">4회차</div>
+  </div>
+
+  <!-- Round Detail -->
+  <section class="round-detail" id="roundDetail">
+    <h2>3회차 선정 종목 — 2026-04-20</h2>
+    <div class="ticker-card">
+      <div class="ticker-badge">NKE</div>
+      <div class="ticker-info">
+        <div class="name">나이키</div>
+        <div class="sector">스포츠 의류 / 소비재</div>
+      </div>
+      <div class="ticker-price">
+        <div class="price loss">$44.69</div>
+        <div class="change loss">▼ -0.47% ($-0.21)</div>
+      </div>
+    </div>
+    <div class="ticker-stats">
+      <div class="ticker-stat">
+        <div class="label">매수가</div>
+        <div class="val">$44.90</div>
+      </div>
+      <div class="ticker-stat">
+        <div class="label">현재가</div>
+        <div class="val" style="color: var(--loss);">$44.69</div>
+      </div>
+      <div class="ticker-stat">
+        <div class="label">팀 보유</div>
+        <div class="val">35주</div>
+      </div>
+    </div>
+    <div class="decision-row">
+      <div class="decision-btn strong-buy">강력 매수</div>
+      <div class="decision-btn">매수</div>
+      <div class="decision-btn active">보유</div>
+      <div class="decision-btn">매도</div>
+      <div class="decision-btn sell">강력 매도</div>
+    </div>
+    <div class="opinion">
+      <strong>💡 의견:</strong> 'Win Now' 구조조정으로 비용 절감 중이나 중국 매출 -20% 전망·Converse -35% 등 단기 실적 회복 불확실. 2027년 2월 분기부터 매출 성장 재개 예상
+    </div>
+    <div class="news-title">📰 주요 뉴스</div>
+    <div class="news-list">
+      <div class="news-item">
+        <span class="news-dot red"></span>
+        <div class="news-text">
+          <div class="title">2차 인력 감축 단행</div>
+          <div class="detail">기술 부서 중심 1,400명(전체 2%) 추가 감원, Win Now 턴어라운드 전략 가속화</div>
+        </div>
+        <div class="news-date">2026-04-15</div>
+      </div>
+      <div class="news-item">
+        <span class="news-dot red"></span>
+        <div class="news-text">
+          <div class="title">중국 매출 -20% 전망</div>
+          <div class="detail">현 분기 중국 추가 급락, Converse YoY -35% 지속. JPMorgan 등 복수 증권사 하향 조정</div>
+        </div>
+        <div class="news-date">2026-04-10</div>
+      </div>
+      <div class="news-item">
+        <span class="news-dot yellow"></span>
+        <div class="news-text">
+          <div class="title">혁신 총괄 임원 교체</div>
+          <div class="detail">Tony Bignell 퇴임·Andy Caine 선임, 제품 혁신 방향 재정비 중</div>
+        </div>
+        <div class="news-date">2026-04-08</div>
+      </div>
+      <div class="news-item">
+        <span class="news-dot yellow"></span>
+        <div class="news-text">
+          <div class="title">52주 최저가 근접</div>
+          <div class="detail">현재 $44.69, 52주 저점 $42.09 근접. 밸류에이션 매력 vs 실적 불확실성 사이 관망세</div>
+        </div>
+        <div class="news-date">2026-04-24</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3회차 멤버별 -->
+  <section class="round-members">
+    <div class="section-title">
+      <span class="dot"></span>
+      <span>3회차 선원별 NKE 매입 현황</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>선원</th>
+          <th>수량</th>
+          <th>매수가</th>
+          <th>투자금</th>
+          <th>평가금</th>
+          <th>수익금</th>
+          <th>수익률</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="member-cell"><div class="avatar c-1">김</div>김하나</div></td>
+          <td>10주</td>
+          <td>$44.69</td>
+          <td>$446.90</td>
+          <td>$446.90</td>
+          <td style="color: var(--text-dim);">+$0.00</td>
+          <td><span class="pct-pill zero">+0.00%</span></td>
+        </tr>
+        <tr>
+          <td><div class="member-cell"><div class="avatar c-1">김</div>김재윤</div></td>
+          <td>20주</td>
+          <td>$45.00</td>
+          <td>$900.00</td>
+          <td>$893.80</td>
+          <td style="color: var(--loss);">-$6.20</td>
+          <td><span class="pct-pill loss">-0.69%</span></td>
+        </tr>
+        <tr>
+          <td><div class="member-cell"><div class="avatar c-2">신</div>신선아</div></td>
+          <td>5주</td>
+          <td>$45.00</td>
+          <td>$225.00</td>
+          <td>$223.45</td>
+          <td style="color: var(--loss);">-$1.55</td>
+          <td><span class="pct-pill loss">-0.69%</span></td>
+        </tr>
+        <tr>
+          <td><div class="member-cell"><div class="avatar c-5">박</div>박지원</div></td>
+          <td colspan="6" class="skip">⚓ 미참여 — 다음 항구에서 다시 만나요</td>
+        </tr>
+        <tr>
+          <td><div class="member-cell"><div class="avatar c-3">윤</div>윤다혜</div></td>
+          <td colspan="6" class="skip">⚓ 미참여</td>
+        </tr>
+        <tr>
+          <td><div class="member-cell"><div class="avatar c-2">이</div>이주영</div></td>
+          <td colspan="6" class="skip">⚓ 미참여</td>
+        </tr>
+        <tr>
+          <td><div class="member-cell"><div class="avatar c-2">이</div>이수연</div></td>
+          <td colspan="6" class="skip">⚓ 미참여</td>
+        </tr>
+        <tr>
+          <td><div class="member-cell"><div class="avatar c-4">정</div>정호준</div></td>
+          <td colspan="6" class="skip">⚓ 미참여</td>
+        </tr>
+        <tr>
+          <td><div class="member-cell"><div class="avatar c-6">조</div>조진서</div></td>
+          <td colspan="6" class="skip">⚓ 미참여</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 3-Col -->
+  <section class="three-col">
+    <div class="panel">
+      <div class="section-title"><span class="dot"></span>종목별 화물 비중</div>
+      <div class="alloc-bar-grid" id="allocList">
+        <div class="alloc-row">
+          <span class="alloc-dot" style="background: #7c5cff;"></span>
+          <span class="alloc-name"><b>PL</b>플래닛 랩스</span>
+          <div class="alloc-bar"><span style="background: #7c5cff;" data-w="42.8"></span></div>
+          <span class="alloc-pct">42.8%</span>
+        </div>
+        <div class="alloc-row">
+          <span class="alloc-dot" style="background: #f87171;"></span>
+          <span class="alloc-name"><b>NKE</b>나이키</span>
+          <div class="alloc-bar"><span style="background: #f87171;" data-w="27.8"></span></div>
+          <span class="alloc-pct">27.8%</span>
+        </div>
+        <div class="alloc-row">
+          <span class="alloc-dot" style="background: #34d399;"></span>
+          <span class="alloc-name"><b>GOOGL</b>알파벳</span>
+          <div class="alloc-bar"><span style="background: #34d399;" data-w="18.3"></span></div>
+          <span class="alloc-pct">18.3%</span>
+        </div>
+        <div class="alloc-row">
+          <span class="alloc-dot" style="background: #fbbf24;"></span>
+          <span class="alloc-name"><b>NVDA</b>엔비디아</span>
+          <div class="alloc-bar"><span style="background: #fbbf24;" data-w="11.1"></span></div>
+          <span class="alloc-pct">11.1%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="section-title"><span class="dot"></span>수익률 TOP 선원</div>
+      <div id="topPctList"></div>
+    </div>
+
+    <div class="panel">
+      <div class="section-title"><span class="dot"></span>수익금 TOP 선원</div>
+      <div id="topProfitList"></div>
+    </div>
+  </section>
+
+  <!-- 전체 랭킹 (선원 명부) -->
+  <section class="ranking">
+    <div class="section-title">
+      <span class="dot"></span>
+      <span>오호츠크 선원 명부</span>
+      <span class="badge-mini">전체 9명 · 등급은 누적 수익률 기준</span>
+    </div>
+    <div id="crewList"></div>
+  </section>
+
+  <footer>
+    <div class="compass">🧭</div>
+    <div>오호츠크해를 항해하는 9명의 선원들 · HFK 26여름 시즌</div>
+    <div style="margin-top: 4px; opacity: 0.7;">데이터 기준: 2026-04-27</div>
+  </footer>
+
+</div>
+
+<script>
+  // ========== Data ==========
+  const ROUNDS = [
+    { num: 1, date: '03-23', tickers: 'PL', pct: 11.20, status: 'done' },
+    { num: 2, date: '04-06', tickers: 'NVDA · GOOGL', pct: 6.57, status: 'done' },
+    { num: 3, date: '04-20', tickers: 'NKE', pct: -0.47, status: 'active' },
+    { num: 4, date: null, tickers: '미정', pct: null, status: 'future' }
+  ];
+
+  const MEMBERS = [
+    { name: '이수연', surname: '이', invested: 295.00,  value: 354.40,  profit: 59.40,  profitPct: 20.14, holdings: ['PL'], color: 'c-2' },
+    { name: '신선아', surname: '신', invested: 505.00,  value: 577.85,  profit: 72.85,  profitPct: 14.43, holdings: ['PL','NKE'], color: 'c-2' },
+    { name: '김하나', surname: '김', invested: 1121.61, value: 1212.21, profit: 90.60,  profitPct: 8.08,  holdings: ['PL','NVDA','GOOGL','NKE'], color: 'c-1' },
+    { name: '이주영', surname: '이', invested: 843.00,  value: 907.07,  profit: 64.07,  profitPct: 7.60,  holdings: ['PL','NVDA','GOOGL'], color: 'c-2' },
+    { name: '김재윤', surname: '김', invested: 2420.00, value: 2509.67, profit: 89.67,  profitPct: 3.71,  holdings: ['PL','NVDA','GOOGL','NKE'], color: 'c-1' },
+    { name: '윤다혜', surname: '윤', invested: 0,       value: 0,       profit: 0,      profitPct: 0,     holdings: [], color: 'c-3' },
+    { name: '정호준', surname: '정', invested: 0,       value: 0,       profit: 0,      profitPct: 0,     holdings: [], color: 'c-4' },
+    { name: '박지원', surname: '박', invested: 35.82,   value: 35.44,   profit: -0.38,  profitPct: -1.06, holdings: ['PL'], color: 'c-5' },
+    { name: '조진서', surname: '조', invested: 36.20,   value: 35.44,   profit: -0.76,  profitPct: -2.10, holdings: ['PL'], color: 'c-6' }
+  ];
+
+  // ========== 등급 시스템 ==========
+  function getLevel(m) {
+    if (m.invested === 0) return { emoji: '⚓', name: '항구 대기' };
+    const p = m.profitPct;
+    if (p < 0)    return { emoji: '🌊', name: '다음 항해 준비' };
+    if (p < 3)    return { emoji: '🐚', name: '조개껍데기 줍기' };
+    if (p < 7)    return { emoji: '🐟', name: '청어 낚시 성공' };
+    if (p < 12)   return { emoji: '🐧', name: '펭귄 사진가' };
+    if (p < 17)   return { emoji: '🦭', name: '바다표범 연구원' };
+    if (p < 20)   return { emoji: '🐻‍❄️', name: '북극곰 이웃' };
+    return            { emoji: '🐋', name: '범고래 선장' };
+  }
+
+  // ========== 배지 ==========
+  const maxInvested = Math.max(...MEMBERS.map(m => m.invested));
+  const sortedByPct = [...MEMBERS].filter(m => m.invested > 0).sort((a,b) => b.profitPct - a.profitPct);
+  const sortedByProfit = [...MEMBERS].filter(m => m.invested > 0).sort((a,b) => b.profit - a.profit);
+
+  function getBadges(m) {
+    const badges = [];
+    const pctRank = sortedByPct.findIndex(x => x.name === m.name);
+    const profitRank = sortedByProfit.findIndex(x => x.name === m.name);
+    if (pctRank === 0) badges.push({ class: 'gold',   text: '🥇 수익률 1위' });
+    if (pctRank === 1) badges.push({ class: 'silver', text: '🥈 수익률 2위' });
+    if (pctRank === 2) badges.push({ class: 'bronze', text: '🥉 수익률 3위' });
+    if (profitRank === 0) badges.push({ class: 'gold', text: '💰 수익금왕' });
+    if (m.invested === maxInvested) badges.push({ class: 'purple', text: '🐋 큰손' });
+    if (m.holdings.length >= 4) badges.push({ class: 'ice', text: '🌊 다양성 항해사' });
+    if (m.holdings.length >= 4 && m.holdings.includes('NKE')) badges.push({ class: 'ice', text: '🧊 개근 클럽' });
+    if (m.invested === 0) badges.push({ class: '', text: '⚓ 다음 회차 합류 예정' });
+    return badges;
+  }
+
+  // ========== 항해 지도 ==========
+  function renderVoyageMap() {
+    const map = document.getElementById('voyageMap');
+    const xs = [10, 36, 64, 90];
+    const yTop = 50;
+    const path = `M ${xs[0]} ${yTop} Q ${(xs[0]+xs[1])/2} 30, ${xs[1]} ${yTop} T ${xs[2]} ${yTop} T ${xs[3]} ${yTop}`;
+    map.innerHTML = `
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="seaLine" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0%" stop-color="#7c5cff" stop-opacity="0.8"/>
+            <stop offset="60%" stop-color="#34d399" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#67e8f9" stop-opacity="0.4"/>
+          </linearGradient>
+        </defs>
+        <path d="${path}" stroke="url(#seaLine)" stroke-width="0.6" fill="none" stroke-dasharray="0.8 1" stroke-linecap="round"/>
+      </svg>
+    `;
+    ROUNDS.forEach((r, i) => {
+      const port = document.createElement('div');
+      port.className = `port ${r.status}`;
+      port.style.left = `${xs[i] + 0.5}%`;
+      port.style.top = '38%';
+      const marker = r.status === 'done' ? '✓' : (r.status === 'active' ? '▶' : r.num);
+      const pctClass = r.pct == null ? '' : (r.pct >= 0 ? 'pos' : 'neg');
+      const pctText = r.pct == null ? '' : `<div class="pct ${pctClass}">${r.pct >= 0 ? '+' : ''}${r.pct.toFixed(2)}%</div>`;
+      port.innerHTML = `
+        <div class="marker">${marker}</div>
+        <div class="meta">${r.num}회차${r.date ? ' · ' + r.date : ''}</div>
+        <div class="ticker">${r.tickers}</div>
+        ${pctText}
+      `;
+      map.appendChild(port);
+    });
+    // 항해 중인 배 (3회차 위에)
+    const ship = document.createElement('div');
+    ship.className = 'ship';
+    ship.textContent = '⛵';
+    ship.style.left = `${xs[2] + 0.5}%`;
+    ship.style.top = '38%';
+    map.appendChild(ship);
+  }
+
+  // ========== TOP lists ==========
+  function renderTopList(elId, sorted, valueFn, colorFn, maxVal) {
+    const el = document.getElementById(elId);
+    const medals = ['🥇','🥈','🥉'];
+    const html = MEMBERS.map(m => m).sort((a, b) => sorted(b) - sorted(a)).map((m, i) => {
+      const val = valueFn(m);
+      const w = maxVal > 0 ? Math.max(2, (Math.abs(sorted(m)) / maxVal) * 100) : 2;
+      const color = colorFn(m);
+      const rankCls = i < 3 ? `medal-${i+1}` : '';
+      const rank = i < 3 ? medals[i] : (i+1);
+      return `
+        <div class="top-row">
+          <div class="top-rank ${rankCls}">${rank}</div>
+          <div class="member-cell"><div class="avatar ${m.color}">${m.surname}</div>${m.name}</div>
+          <div class="top-bar"><span style="background:${color};" data-w="${w}"></span></div>
+          <div class="top-val" style="color:${sorted(m) >= 0 ? '' : 'var(--loss)'}">${val}</div>
+        </div>
+      `;
+    }).join('');
+    el.innerHTML = html;
+  }
+
+  // ========== Crew List ==========
+  function renderCrew() {
+    const el = document.getElementById('crewList');
+    const sorted = [...MEMBERS].sort((a, b) => {
+      if (a.invested === 0 && b.invested > 0) return 1;
+      if (b.invested === 0 && a.invested > 0) return -1;
+      return b.profitPct - a.profitPct;
+    });
+    const maxAbsPct = Math.max(...MEMBERS.map(m => Math.abs(m.profitPct))) || 1;
+    el.innerHTML = sorted.map((m, i) => {
+      const lvl = getLevel(m);
+      const badges = getBadges(m);
+      const rank = i + 1;
+      const rankCls = rank <= 3 && m.invested > 0 ? `rank-${rank}` : '';
+      const medalEmoji = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : '';
+      const rankNum = m.invested > 0 ? rank : '—';
+      const skipCls = m.invested === 0 ? 'skip' : '';
+      const pctCls = m.profitPct > 0 ? 'gain' : m.profitPct < 0 ? 'loss' : 'zero';
+      const barW = (Math.abs(m.profitPct) / maxAbsPct) * 100;
+      const barCls = m.profitPct < 0 ? 'loss' : 'gain';
+      const profitSign = m.profit > 0 ? '+' : m.profit < 0 ? '-' : '+';
+      const profitAbs = Math.abs(m.profit).toFixed(2);
+      const tickerChips = m.holdings.length > 0
+        ? m.holdings.map(t => `<span class="ticker-chip">${t}</span>`).join('')
+        : '<span class="ticker-chip">미보유</span>';
+      const pctSign = m.profitPct > 0 ? '+' : m.profitPct < 0 ? '' : '+';
+      return `
+        <div class="crew-card ${rankCls} ${skipCls}">
+          <div class="crew-rank ${rank<=3 && m.invested>0 ? 'medal-'+rank : ''}">
+            ${rankNum}
+            ${medalEmoji ? `<span class="medal-emoji">${medalEmoji}</span>` : ''}
+          </div>
+          <div class="member-cell">
+            <div class="avatar ${m.color}" style="width:42px; height:42px; font-size:16px;">${m.surname}</div>
+            <div class="crew-info">
+              <div class="name-row">
+                <span class="name">${m.name}</span>
+                <span class="level">${lvl.emoji} ${lvl.name}</span>
+              </div>
+              <div style="font-size:12px; color: var(--text-faint);">투자 $${m.invested.toFixed(2)} · 평가 $${m.value.toFixed(2)}</div>
+              <div class="badges">${badges.map(b => `<span class="badge ${b.class}">${b.text}</span>`).join('')}</div>
+            </div>
+          </div>
+          <div class="crew-bar">
+            <div class="bar-track"><span class="bar-fill ${barCls}" data-w="${barW}"></span></div>
+            <div class="bar-meta">
+              <span>누적 수익률</span>
+              <div class="ticker-chips">${tickerChips}</div>
+            </div>
+          </div>
+          <div class="crew-numbers">
+            <div class="pct ${pctCls}">${pctSign}${m.profitPct.toFixed(2)}%</div>
+            <div class="money">${profitSign}$${profitAbs}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ========== Count up animation ==========
+  function animateNumber(el) {
+    const target = parseFloat(el.dataset.count);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    const start = performance.now();
+    const dur = 1400;
+    function frame(t) {
+      const p = Math.min((t - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const cur = target * eased;
+      el.textContent = `${prefix}${cur.toFixed(2)}${suffix}`;
+      if (p < 1) requestAnimationFrame(frame);
+      else el.textContent = `${prefix}${target.toFixed(2)}${suffix}`;
+    }
+    requestAnimationFrame(frame);
+  }
+
+  // ========== Bar fill animation ==========
+  function fillBars() {
+    requestAnimationFrame(() => {
+      document.querySelectorAll('[data-w]').forEach(b => {
+        b.style.width = b.dataset.w + '%';
+      });
+    });
+  }
+
+  // ========== Init ==========
+  document.addEventListener('DOMContentLoaded', () => {
+    renderVoyageMap();
+    renderCrew();
+
+    const sortedPctMembers = [...MEMBERS].filter(m => m.invested > 0);
+    const maxPct = Math.max(...MEMBERS.map(m => Math.abs(m.profitPct))) || 1;
+    const maxProfit = Math.max(...MEMBERS.map(m => Math.abs(m.profit))) || 1;
+
+    renderTopList(
+      'topPctList',
+      m => m.profitPct,
+      m => `${m.profitPct >= 0 ? '+' : ''}${m.profitPct.toFixed(2)}%`,
+      m => m.profitPct >= 0 ? '#34d399' : '#f87171',
+      maxPct
+    );
+    renderTopList(
+      'topProfitList',
+      m => m.profit,
+      m => `${m.profit >= 0 ? '+' : '-'}$${Math.abs(m.profit).toFixed(2)}`,
+      m => m.profit >= 0 ? '#fbbf24' : '#f87171',
+      maxProfit
+    );
+
+    document.querySelectorAll('[data-count]').forEach(animateNumber);
+    setTimeout(fillBars, 200);
+
+    // Round tab interaction (visual only — 1·2회차는 추가 정보 미수집)
+    document.querySelectorAll('.round-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.round-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const r = parseInt(tab.dataset.round);
+        const round = ROUNDS.find(x => x.num === r);
+        const detail = document.getElementById('roundDetail');
+        if (r !== 3) {
+          if (r === 4) {
+            detail.style.opacity = '0.55';
+            detail.querySelector('h2').textContent = `4회차 — 미정 (다음 항구 미공개)`;
+          } else {
+            detail.style.opacity = '1';
+            detail.querySelector('h2').textContent = `${r}회차 ${round.tickers} — ${round.date} · 결과 ${round.pct >= 0 ? '+' : ''}${round.pct.toFixed(2)}%`;
+          }
+        } else {
+          detail.style.opacity = '1';
+          detail.querySelector('h2').textContent = '3회차 선정 종목 — 2026-04-20';
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
