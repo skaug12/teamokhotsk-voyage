@@ -3,129 +3,190 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>팀 오호츠크 항해일지</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>팀 오호츠크 항해일지 ⚓</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg-0: #050a18;
-    --bg-1: #0a1428;
-    --bg-2: #0e1f3a;
-    --card: rgba(20, 40, 70, 0.45);
-    --card-strong: rgba(30, 56, 96, 0.6);
-    --border: rgba(120, 170, 230, 0.14);
-    --border-strong: rgba(140, 200, 255, 0.28);
-    --text: #e8f4f8;
-    --text-dim: #93a8c2;
-    --text-faint: #5e7795;
-    --ice: #67e8f9;
-    --ice-deep: #4dd4e6;
-    --aurora-1: #7c5cff;
-    --aurora-2: #a78bfa;
-    --aurora-3: #ec4899;
-    --gold: #fbbf24;
-    --gold-soft: #fde68a;
-    --gain: #34d399;
-    --loss: #f87171;
-    --silver: #cbd5e1;
-    --bronze: #d97706;
+    --ocean-deep: #08152e;
+    --ocean: #0f2e5b;
+    --ocean-mid: #1c4a91;
+    --ocean-light: #2d6cb8;
+    --sky: #5a9bcc;
+    --foam: #b9dcf2;
+    --coral-pink: #ff6b9d;
+    --coral-orange: #ff9e64;
+    --coral-purple: #c084fc;
+    --kelp: #4ade80;
+    --kelp-dark: #166534;
+    --sand: #f4d49b;
+    --bubble: #bae6fd;
+    --gold: #fcd34d;
+    --gold-deep: #f59e0b;
+    --silver: #e2e8f0;
+    --bronze: #f97316;
+    --gain: #5eead4;
+    --loss: #fb7185;
+    --text: #ecf6ff;
+    --text-dim: #a3c5e6;
+    --text-faint: #6688b0;
+    --frame-bg: #0a1d3d;
+    --frame-border: #4a7cb0;
+    --frame-shadow: #02060e;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html, body {
-    background: var(--bg-0);
-    color: var(--text);
-    font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    font-feature-settings: 'tnum';
-    overflow-x: hidden;
-    min-height: 100vh;
-  }
+  html { image-rendering: pixelated; }
 
   body {
+    font-family: 'DotGothic16', 'Press Start 2P', 'Pretendard', monospace;
+    color: var(--text);
+    background: var(--ocean-deep);
+    overflow-x: hidden;
+    min-height: 100vh;
+    line-height: 1.4;
+    /* 픽셀 그라디언트 바닷속 (가로 라인 ditherig 느낌) */
     background:
-      radial-gradient(ellipse at 20% 0%, rgba(124,92,255,0.18), transparent 55%),
-      radial-gradient(ellipse at 90% 10%, rgba(77,212,230,0.12), transparent 50%),
-      radial-gradient(ellipse at 50% 100%, rgba(236,72,153,0.10), transparent 60%),
-      linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 50%, var(--bg-0) 100%);
+      linear-gradient(180deg,
+        #1a3866 0%,
+        #1a3866 18%,
+        #143161 18%,
+        #143161 36%,
+        #0f2e5b 36%,
+        #0f2e5b 56%,
+        #0a1f3d 56%,
+        #0a1f3d 78%,
+        #06122a 78%,
+        #06122a 100%);
     background-attachment: fixed;
     position: relative;
   }
 
-  /* 별이 흐르는 밤하늘 */
-  .stars {
+  /* 광선 (햇빛이 물 속으로) */
+  .lightrays {
+    position: fixed;
+    top: -10%;
+    left: 0;
+    right: 0;
+    height: 80vh;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      linear-gradient(105deg, transparent 30%, rgba(180, 220, 255, 0.06) 32%, transparent 34%),
+      linear-gradient(95deg, transparent 50%, rgba(180, 220, 255, 0.05) 52%, transparent 54%),
+      linear-gradient(115deg, transparent 70%, rgba(180, 220, 255, 0.07) 72%, transparent 74%);
+    animation: rays 8s ease-in-out infinite alternate;
+  }
+  @keyframes rays {
+    from { opacity: 0.6; transform: translateX(-2%); }
+    to   { opacity: 1; transform: translateX(2%); }
+  }
+
+  /* 떠오르는 버블 */
+  .bubbles {
     position: fixed;
     inset: 0;
     pointer-events: none;
     z-index: 0;
-    background-image:
-      radial-gradient(1px 1px at 12% 18%, #fff, transparent),
-      radial-gradient(1px 1px at 28% 72%, #cbd5e1, transparent),
-      radial-gradient(1.5px 1.5px at 45% 32%, #fff, transparent),
-      radial-gradient(1px 1px at 67% 88%, #a5b4fc, transparent),
-      radial-gradient(1.2px 1.2px at 82% 24%, #fff, transparent),
-      radial-gradient(1px 1px at 91% 56%, #67e8f9, transparent),
-      radial-gradient(1px 1px at 7% 47%, #fde68a, transparent),
-      radial-gradient(1.4px 1.4px at 38% 11%, #fff, transparent),
-      radial-gradient(1px 1px at 56% 64%, #fff, transparent),
-      radial-gradient(1px 1px at 73% 8%, #fff, transparent);
-    background-size: 100% 100%;
-    opacity: 0.55;
-    animation: twinkle 6s ease-in-out infinite alternate;
+    overflow: hidden;
   }
-  @keyframes twinkle {
-    from { opacity: 0.35; }
-    to   { opacity: 0.65; }
+  .bubble {
+    position: absolute;
+    bottom: -20px;
+    width: 8px; height: 8px;
+    background: var(--bubble);
+    border-radius: 0;
+    box-shadow:
+      0 -2px 0 0 rgba(255,255,255,0.5),
+      0 2px 0 0 var(--bubble);
+    opacity: 0.6;
+    animation: bubbleUp linear infinite;
   }
-
-  /* 오로라 리본 */
-  .aurora {
-    position: fixed;
-    top: -10%;
-    left: -10%;
-    right: -10%;
-    height: 60vh;
-    z-index: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(50% 60% at 30% 40%, rgba(124,92,255,0.22), transparent 70%),
-      radial-gradient(40% 60% at 70% 30%, rgba(77,212,230,0.18), transparent 70%),
-      radial-gradient(40% 60% at 50% 60%, rgba(236,72,153,0.12), transparent 70%);
-    filter: blur(40px);
-    animation: aurora 14s ease-in-out infinite alternate;
-  }
-  @keyframes aurora {
-    0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0.9; }
-    50%  { transform: translate3d(-3%, 2%, 0) scale(1.08); opacity: 1; }
-    100% { transform: translate3d(2%, -1%, 0) scale(1.04); opacity: 0.85; }
+  .bubble.s { width: 4px; height: 4px; }
+  .bubble.l { width: 12px; height: 12px; }
+  @keyframes bubbleUp {
+    0%   { transform: translateY(0) translateX(0); opacity: 0; }
+    10%  { opacity: 0.6; }
+    90%  { opacity: 0.6; }
+    100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
   }
 
-  /* 둥둥 떠다니는 빙하 */
-  .iceberg {
+  /* 헤엄치는 물고기 */
+  .swim-fish {
     position: fixed;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.18;
-    animation: float 18s ease-in-out infinite;
+    animation: swim linear infinite;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
   }
-  .iceberg.b1 { top: 30%; left: -4%; animation-delay: 0s; }
-  .iceberg.b2 { top: 70%; right: -5%; animation-delay: -6s; opacity: 0.12; }
-  .iceberg.b3 { top: 55%; left: 75%; animation-delay: -12s; opacity: 0.1; }
-  @keyframes float {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50%      { transform: translateY(-14px) rotate(2deg); }
+  @keyframes swim {
+    from { transform: translateX(-10vw); }
+    to   { transform: translateX(110vw); }
+  }
+  @keyframes swimReverse {
+    from { transform: translateX(110vw) scaleX(-1); }
+    to   { transform: translateX(-10vw) scaleX(-1); }
+  }
+
+  /* 해초 (좌우 가장자리 흔들림) */
+  .kelp-strip {
+    position: fixed;
+    bottom: 0;
+    width: 80px;
+    height: 30vh;
+    z-index: 0;
+    pointer-events: none;
+    transform-origin: bottom center;
+    animation: sway 6s ease-in-out infinite alternate;
+    image-rendering: pixelated;
+  }
+  .kelp-strip.left { left: 0; }
+  .kelp-strip.right { right: 0; animation-delay: -3s; }
+  @keyframes sway {
+    from { transform: rotate(-3deg) skewX(-2deg); }
+    to   { transform: rotate(3deg) skewX(2deg); }
   }
 
   main, header { position: relative; z-index: 1; }
 
-  /* ========== Layout ========== */
+  /* ============ Pixel Frame (RPG 메뉴 박스 스타일) ============ */
+  .pf {
+    position: relative;
+    background: var(--frame-bg);
+    border: 4px solid var(--frame-border);
+    box-shadow:
+      inset 0 0 0 4px var(--frame-bg),
+      inset 0 0 0 6px #1a3866,
+      4px 4px 0 0 var(--frame-shadow);
+    padding: 18px 20px;
+    image-rendering: pixelated;
+  }
+  .pf::before, .pf::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--frame-border);
+    pointer-events: none;
+  }
+  .pf::before { top: -4px; left: -4px; box-shadow: 8px 0 0 var(--frame-border), 0 8px 0 var(--frame-border); }
+  .pf::after  { bottom: -4px; right: -4px; box-shadow: -8px 0 0 var(--frame-border), 0 -8px 0 var(--frame-border); }
+
+  .pf.gold   { border-color: var(--gold); --frame-border: var(--gold); }
+  .pf.gain   { border-color: var(--gain); --frame-border: var(--gain); }
+  .pf.purple { border-color: var(--coral-purple); --frame-border: var(--coral-purple); }
+  .pf.coral  { border-color: var(--coral-orange); --frame-border: var(--coral-orange); }
+
+  /* ============ Layout ============ */
   .container {
-    max-width: 1280px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 32px 28px 80px;
+    padding: 28px 20px 80px;
   }
 
+  /* ============ Header ============ */
   header {
     display: flex;
     justify-content: space-between;
@@ -134,1180 +195,1380 @@
     gap: 16px;
     margin-bottom: 28px;
   }
-
   .brand {
     display: flex;
     align-items: center;
     gap: 14px;
   }
-  .brand .logo {
-    width: 56px; height: 56px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, var(--aurora-1), var(--aurora-3) 60%, var(--ice));
+  .brand .logo-pixel {
+    width: 64px;
+    height: 64px;
+    background: var(--frame-bg);
+    border: 4px solid var(--gold);
+    box-shadow: 4px 4px 0 0 var(--frame-shadow);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
-    font-size: 22px;
-    color: #fff;
-    box-shadow: 0 8px 24px rgba(124,92,255,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
-    position: relative;
+    image-rendering: pixelated;
   }
-  .brand .logo::after {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border-radius: 18px;
-    background: linear-gradient(135deg, var(--aurora-1), var(--ice));
-    z-index: -1;
-    opacity: 0.4;
-    filter: blur(6px);
-  }
+  .brand .logo-pixel svg { width: 44px; height: 44px; }
   .brand h1 {
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-family: 'DotGothic16', monospace;
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    text-shadow: 2px 2px 0 var(--frame-shadow);
   }
-  .brand h1 .accent {
-    background: linear-gradient(90deg, var(--ice), var(--aurora-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
+  .brand h1 .accent { color: var(--gold); }
   .brand p {
-    font-size: 12px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
     color: var(--text-faint);
-    letter-spacing: 0.04em;
-    margin-top: 2px;
+    letter-spacing: 0.1em;
+    margin-top: 6px;
   }
 
-  .header-meta {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 13px;
-    color: var(--text-dim);
-  }
-  .header-meta .pulse {
-    display: inline-block;
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--gain);
-    box-shadow: 0 0 0 0 rgba(52,211,153,0.6);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%   { box-shadow: 0 0 0 0 rgba(52,211,153,0.7); }
-    70%  { box-shadow: 0 0 0 10px rgba(52,211,153,0); }
-    100% { box-shadow: 0 0 0 0 rgba(52,211,153,0); }
-  }
+  .header-actions { display: flex; align-items: center; gap: 12px; }
 
-  /* ========== KPI ========== */
-  .kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 32px;
-  }
-  .kpi {
-    position: relative;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 22px 22px 20px;
-    overflow: hidden;
-    backdrop-filter: blur(8px);
-    transition: transform 0.3s ease, border-color 0.3s ease;
-  }
-  .kpi:hover {
-    transform: translateY(-3px);
-    border-color: var(--border-strong);
-  }
-  .kpi::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--accent-grad, linear-gradient(135deg, var(--ice), var(--aurora-1)));
-    opacity: 0.06;
-    pointer-events: none;
-  }
-  .kpi .top-stripe {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--accent-grad);
-  }
-  .kpi .label {
-    font-size: 12px;
-    color: var(--text-faint);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
+  .live-pill {
     display: flex;
     align-items: center;
     gap: 8px;
+    background: var(--frame-bg);
+    color: var(--gain);
+    padding: 8px 14px;
+    border: 3px solid var(--gain);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    box-shadow: 3px 3px 0 0 var(--frame-shadow);
   }
-  .kpi .label .icon {
-    font-size: 14px;
-    filter: grayscale(0.2);
+  .live-pill .dot {
+    width: 8px; height: 8px;
+    background: var(--gain);
+    box-shadow: 0 0 0 2px transparent;
+    animation: blinkDot 1s steps(2) infinite;
   }
-  .kpi .value {
-    font-size: 32px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-bottom: 6px;
-    line-height: 1.1;
-  }
-  .kpi .sub {
-    font-size: 13px;
-    color: var(--text-dim);
-  }
-  .kpi.gain .value { color: var(--gain); }
-  .kpi.loss .value { color: var(--loss); }
-  .kpi.gold .value {
-    background: linear-gradient(90deg, var(--gold), var(--gold-soft));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  .kpi.member .value { color: var(--ice); }
-
-  /* sparkle for top1 */
-  .sparkle {
-    position: absolute;
-    width: 6px; height: 6px;
-    background: #fff;
-    border-radius: 50%;
-    filter: blur(0.5px);
-    animation: sparkle 3s linear infinite;
-    opacity: 0;
-  }
-  @keyframes sparkle {
-    0%, 100% { opacity: 0; transform: scale(0); }
-    50%      { opacity: 1; transform: scale(1.2); }
+  @keyframes blinkDot {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
   }
 
-  /* ========== Voyage Map ========== */
-  .voyage-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 24px 28px 32px;
-    margin-bottom: 28px;
-    backdrop-filter: blur(8px);
-    overflow: hidden;
-    position: relative;
-  }
-  .section-title {
+  .compass-btn {
+    width: 48px; height: 48px;
+    background: var(--frame-bg);
+    border: 3px solid var(--gold);
+    cursor: pointer;
+    font-size: 22px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
-    letter-spacing: -0.01em;
+    justify-content: center;
+    color: var(--gold);
+    box-shadow: 3px 3px 0 0 var(--frame-shadow);
+    transition: transform 0.1s steps(2);
   }
-  .section-title .dot {
-    width: 6px; height: 6px;
-    background: var(--ice);
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--ice);
+  .compass-btn:hover { transform: translate(2px, 2px); box-shadow: 1px 1px 0 0 var(--frame-shadow); }
+  .compass-btn.spinning svg { animation: pixelSpin 1.2s steps(8) 1; }
+  @keyframes pixelSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(720deg); }
   }
-  .section-title .badge-mini {
-    margin-left: auto;
-    font-size: 11px;
-    color: var(--text-faint);
-    letter-spacing: 0.04em;
+  .compass-btn svg { width: 28px; height: 28px; }
+
+  /* ============ Voyage Map (Hero) ============ */
+  .voyage-hero {
+    margin-bottom: 28px;
+    position: relative;
+    overflow: visible;
+  }
+  .voyage-hero .pf {
+    background: linear-gradient(180deg, #1a3866 0%, #0f2e5b 60%, #0a1f3d 100%);
+    overflow: hidden;
+  }
+  .voyage-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .voyage-title h2 {
+    font-family: 'DotGothic16', monospace;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--gold);
+    text-shadow: 2px 2px 0 var(--frame-shadow);
+  }
+  .quest-tag {
+    background: var(--gold);
+    color: #2d1b00;
+    padding: 4px 10px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    box-shadow: 2px 2px 0 0 var(--frame-shadow);
+  }
+  .voyage-title p {
+    font-size: 12px;
+    color: var(--foam);
+    margin-top: 6px;
+    width: 100%;
   }
 
   .voyage-map {
     position: relative;
-    height: 180px;
-    margin: 8px 0 4px;
+    height: 240px;
+    margin-top: 20px;
+    margin-bottom: 8px;
   }
-  .voyage-map svg {
+  .voyage-map svg.path-svg {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
+    overflow: visible;
   }
   .port {
     position: absolute;
     transform: translate(-50%, -50%);
     text-align: center;
+    cursor: pointer;
     z-index: 2;
+    transition: transform 0.1s steps(3);
   }
+  .port:hover { transform: translate(-50%, -55%); }
   .port .marker {
-    width: 38px; height: 38px;
-    border-radius: 50%;
+    width: 56px; height: 56px;
+    background: var(--frame-bg);
+    border: 4px solid var(--frame-border);
+    color: var(--text-dim);
+    font-family: 'Press Start 2P', monospace;
+    font-weight: 700;
+    font-size: 14px;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--bg-2);
-    border: 2px solid var(--border-strong);
-    color: var(--text-dim);
-    font-weight: 700;
-    margin: 0 auto;
-    transition: all 0.3s ease;
+    box-shadow: 3px 3px 0 0 var(--frame-shadow);
+    image-rendering: pixelated;
   }
   .port.done .marker {
-    background: linear-gradient(135deg, var(--aurora-1), var(--aurora-2));
-    border-color: rgba(167,139,250,0.6);
+    background: var(--coral-purple);
+    border-color: #fff;
     color: #fff;
-    box-shadow: 0 4px 16px rgba(124,92,255,0.4);
   }
   .port.active .marker {
-    background: linear-gradient(135deg, var(--gain), var(--ice));
-    border-color: rgba(103,232,249,0.6);
-    color: #062a1d;
-    box-shadow: 0 0 0 4px rgba(52,211,153,0.18), 0 6px 20px rgba(52,211,153,0.45);
-    animation: activePulse 2.4s ease-in-out infinite;
+    background: var(--gold);
+    border-color: #fff;
+    color: #2d1b00;
+    animation: portActive 1s steps(2) infinite;
   }
   .port.future .marker {
-    background: var(--bg-1);
+    background: var(--frame-bg);
+    border-color: var(--text-faint);
     border-style: dashed;
     color: var(--text-faint);
   }
-  @keyframes activePulse {
-    0%, 100% { box-shadow: 0 0 0 4px rgba(52,211,153,0.18), 0 6px 20px rgba(52,211,153,0.45); }
-    50%      { box-shadow: 0 0 0 10px rgba(52,211,153,0.05), 0 6px 24px rgba(52,211,153,0.6); }
+  @keyframes portActive {
+    0%, 50% { box-shadow: 3px 3px 0 0 var(--frame-shadow); }
+    51%, 100% { box-shadow: 3px 3px 0 0 var(--frame-shadow), 0 0 0 4px rgba(252,211,77,0.4); }
   }
-  .port .meta {
+  .port .label-pill {
     margin-top: 8px;
-    font-size: 11px;
+    background: var(--frame-bg);
+    border: 2px solid var(--frame-border);
+    padding: 4px 8px;
+    box-shadow: 2px 2px 0 0 var(--frame-shadow);
+    display: inline-block;
+  }
+  .port .label-pill .meta {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
     color: var(--text-faint);
-    letter-spacing: 0.04em;
   }
-  .port .ticker {
-    margin-top: 4px;
+  .port .label-pill .ticker {
     font-size: 12px;
-    color: var(--text-dim);
-    font-weight: 600;
-  }
-  .port.active .ticker { color: var(--text); }
-  .port .pct {
-    margin-top: 2px;
-    font-size: 12px;
+    color: var(--text);
     font-weight: 700;
+    margin-top: 2px;
+  }
+  .port .label-pill .pct {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    margin-top: 2px;
   }
   .port .pct.pos { color: var(--gain); }
   .port .pct.neg { color: var(--loss); }
 
-  /* 항해 중인 배 */
-  .ship {
+  /* 픽셀 배 */
+  .ship-pixel {
     position: absolute;
-    transform: translate(-50%, -130%);
+    transform: translate(-50%, -180%);
     z-index: 3;
-    font-size: 28px;
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
-    animation: bobShip 3s ease-in-out infinite;
+    width: 56px;
+    height: 56px;
+    cursor: pointer;
+    animation: shipBob 1.4s steps(3) infinite alternate;
+    image-rendering: pixelated;
   }
-  @keyframes bobShip {
-    0%, 100% { transform: translate(-50%, -130%) rotate(-2deg); }
-    50%      { transform: translate(-50%, -136%) rotate(2deg); }
+  @keyframes shipBob {
+    from { transform: translate(-50%, -180%) rotate(-3deg); }
+    to   { transform: translate(-50%, -190%) rotate(3deg); }
   }
 
-  /* ========== Round Tabs ========== */
+  /* ============ Round Tabs ============ */
   .round-tabs {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   }
   .round-tab {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px 16px;
+    background: var(--frame-bg);
+    border: 3px solid var(--frame-border);
+    padding: 10px 14px;
     color: var(--text-dim);
-    font-size: 14px;
-    font-weight: 500;
+    font-family: 'DotGothic16', monospace;
+    font-size: 13px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    text-align: center;
+    box-shadow: 3px 3px 0 0 var(--frame-shadow);
+    transition: transform 0.1s steps(2);
+  }
+  .round-tab:hover { transform: translate(2px, 2px); box-shadow: 1px 1px 0 0 var(--frame-shadow); }
+  .round-tab.active {
+    background: var(--coral-pink);
+    border-color: #fff;
+    color: #fff;
+  }
+
+  /* ============ Quest ============ */
+  .quest {
+    margin-bottom: 28px;
+    position: relative;
+  }
+  .quest .pf {
+    background:
+      linear-gradient(180deg, rgba(192, 132, 252, 0.06), transparent 80%),
+      var(--frame-bg);
+  }
+  .quest-head {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 6px;
+    gap: 16px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
   }
-  .round-tab:hover { border-color: var(--border-strong); color: var(--text); }
-  .round-tab.active {
-    background: linear-gradient(135deg, var(--aurora-1), var(--aurora-2));
+  .ticker-big {
+    background: var(--coral-pink);
     color: #fff;
-    border-color: transparent;
-    box-shadow: 0 6px 18px rgba(124,92,255,0.35);
-  }
-  .round-tab.active .live-dot {
-    width: 6px; height: 6px;
-    background: var(--gain);
-    border-radius: 50%;
-    box-shadow: 0 0 6px var(--gain);
-  }
-  .round-tab .live-dot { display: none; }
-  .round-tab.live .live-dot { display: inline-block; }
-
-  /* ========== Round Detail ========== */
-  .round-detail {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 24px 28px;
-    margin-bottom: 28px;
-    backdrop-filter: blur(8px);
-  }
-  .round-detail h2 {
+    font-family: 'Press Start 2P', monospace;
     font-size: 14px;
-    font-weight: 500;
-    color: var(--text-dim);
-    margin-bottom: 16px;
-    letter-spacing: -0.01em;
+    padding: 12px 16px;
+    border: 3px solid #fff;
+    box-shadow: 3px 3px 0 0 var(--frame-shadow);
+    letter-spacing: 0.04em;
   }
-  .ticker-card {
-    background: var(--card-strong);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px 22px;
-    margin-bottom: 20px;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 18px;
-    align-items: center;
+  .quest-head .name {
+    font-family: 'DotGothic16', monospace;
+    font-size: 22px;
   }
-  .ticker-badge {
-    background: linear-gradient(135deg, var(--aurora-1), var(--aurora-2));
-    color: #fff;
-    font-weight: 700;
-    font-size: 14px;
-    padding: 8px 14px;
-    border-radius: 10px;
-    letter-spacing: 0.02em;
-  }
-  .ticker-info .name {
-    font-size: 17px;
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
-  .ticker-info .sector {
+  .quest-head .sector {
     font-size: 12px;
     color: var(--text-faint);
-  }
-  .ticker-price {
-    text-align: right;
-  }
-  .ticker-price .price {
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-  .ticker-price .price.loss { color: var(--loss); }
-  .ticker-price .price.gain { color: var(--gain); }
-  .ticker-price .change {
-    font-size: 13px;
     margin-top: 2px;
   }
-  .ticker-price .change.loss { color: var(--loss); }
-  .ticker-price .change.gain { color: var(--gain); }
+  .quest-head .price-block {
+    margin-left: auto;
+    text-align: right;
+  }
+  .quest-head .price {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 22px;
+    color: var(--loss);
+    text-shadow: 2px 2px 0 var(--frame-shadow);
+  }
+  .quest-head .change {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: var(--loss);
+    margin-top: 6px;
+  }
 
-  .ticker-stats {
+  .quest-stats {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
   }
-  .ticker-stat {
-    background: rgba(10, 22, 42, 0.5);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 16px;
+  .quest-stat {
+    background: var(--ocean-deep);
+    border: 2px solid var(--frame-border);
+    padding: 12px 14px;
     text-align: center;
+    box-shadow: 2px 2px 0 0 var(--frame-shadow);
   }
-  .ticker-stat .label {
-    font-size: 11px;
+  .quest-stat .lbl {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
     color: var(--text-faint);
-    letter-spacing: 0.04em;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
   }
-  .ticker-stat .val {
-    font-size: 18px;
-    font-weight: 700;
+  .quest-stat .v {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    color: var(--text);
   }
+  .quest-stat.decision .v { color: var(--gold); }
 
-  .decision-row {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-    margin-bottom: 20px;
-  }
-  .decision-btn {
-    padding: 11px;
-    text-align: center;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 500;
-    border: 1px solid var(--border);
-    background: rgba(10, 22, 42, 0.4);
-    color: var(--text-faint);
-  }
-  .decision-btn.active {
-    border-color: var(--gold);
-    color: var(--gold);
-    background: rgba(251,191,36,0.06);
-  }
-  .decision-btn.strong-buy.active { border-color: var(--gain); color: var(--gain); background: rgba(52,211,153,0.06); }
-  .decision-btn.sell.active       { border-color: var(--loss); color: var(--loss); background: rgba(248,113,113,0.06); }
-
-  .opinion {
-    background: rgba(251,191,36,0.06);
-    border-left: 3px solid var(--gold);
-    border-radius: 4px 12px 12px 4px;
-    padding: 14px 18px;
+  .quest-opinion {
+    background: rgba(252,211,77,0.08);
+    border-left: 4px solid var(--gold);
+    padding: 12px 16px;
     font-size: 13px;
     color: var(--text-dim);
-    margin-bottom: 24px;
-    line-height: 1.6;
+    line-height: 1.7;
+    margin-bottom: 14px;
   }
-  .opinion strong { color: var(--gold-soft); }
+  .quest-opinion strong { color: var(--gold); font-family: 'DotGothic16', monospace; }
 
-  .news-title {
+  .news-toggle {
+    background: var(--ocean-deep);
+    border: 3px solid var(--frame-border);
+    padding: 10px 14px;
+    cursor: pointer;
+    font-family: 'DotGothic16', monospace;
     font-size: 13px;
-    color: var(--text-dim);
-    margin-bottom: 12px;
-    font-weight: 500;
+    color: var(--text);
+    width: 100%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 3px 3px 0 0 var(--frame-shadow);
+    transition: transform 0.1s steps(2);
   }
-  .news-list { display: flex; flex-direction: column; gap: 0; }
+  .news-toggle:hover { transform: translate(2px, 2px); box-shadow: 1px 1px 0 0 var(--frame-shadow); }
+  .news-toggle.open .arrow { transform: rotate(180deg); }
+  .news-toggle .arrow { transition: transform 0.2s steps(2); display: inline-block; }
+  .news-list {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  .news-list.open { max-height: 700px; }
+  .news-list-inner { padding-top: 12px; }
   .news-item {
     display: grid;
-    grid-template-columns: 16px 1fr auto;
+    grid-template-columns: 14px 1fr auto;
     gap: 12px;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--border);
+    padding: 10px 12px;
+    border-bottom: 2px dashed var(--frame-border);
     align-items: start;
   }
   .news-item:last-child { border-bottom: none; }
   .news-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    margin-top: 6px;
+    width: 10px; height: 10px;
+    margin-top: 4px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.4);
   }
   .news-dot.red    { background: var(--loss); }
   .news-dot.yellow { background: var(--gold); }
-  .news-dot.green  { background: var(--gain); }
-  .news-text .title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .news-text .title { font-size: 13px; font-weight: 700; margin-bottom: 4px; font-family: 'DotGothic16', monospace; }
   .news-text .detail { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
-  .news-date { font-size: 11px; color: var(--text-faint); white-space: nowrap; }
+  .news-date { font-family: 'Press Start 2P', monospace; font-size: 8px; color: var(--text-faint); white-space: nowrap; }
 
-  /* ========== Round Members Table ========== */
-  .round-members {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 24px 28px;
+  /* ============ KPI ============ */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
     margin-bottom: 28px;
-    backdrop-filter: blur(8px);
-    overflow-x: auto;
   }
-  .round-members table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
+  .kpi {
+    position: relative;
+    overflow: visible;
   }
-  .round-members thead th {
-    text-align: right;
-    padding: 12px 10px;
-    font-weight: 500;
-    font-size: 11px;
+  .kpi .pf {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .kpi-mascot {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 8px;
+    image-rendering: pixelated;
+    animation: bobMascot 2.4s steps(2) infinite alternate;
+  }
+  @keyframes bobMascot {
+    from { transform: translateY(0) rotate(-3deg); }
+    to   { transform: translateY(-3px) rotate(3deg); }
+  }
+  .kpi .lbl {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
     color: var(--text-faint);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
   }
-  .round-members thead th:first-child { text-align: left; }
-  .round-members tbody td {
-    padding: 14px 10px;
-    text-align: right;
-    border-bottom: 1px solid rgba(120,170,230,0.06);
+  .kpi .val {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 16px;
+    color: var(--text);
+    margin-bottom: 6px;
+    text-shadow: 2px 2px 0 var(--frame-shadow);
   }
-  .round-members tbody td:first-child { text-align: left; }
-  .round-members tbody tr:hover { background: rgba(124,92,255,0.04); }
-  .round-members .skip { color: var(--text-faint); font-size: 12px; }
+  .kpi .sub {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .kpi.gain .val { color: var(--gain); }
+  .kpi.gold .val { color: var(--gold); }
+  .kpi.purple .val { color: var(--coral-purple); }
+  .kpi .name-line {
+    font-family: 'DotGothic16', monospace;
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
 
-  .member-cell { display: flex; align-items: center; gap: 10px; }
-  .avatar {
-    width: 30px; height: 30px;
-    border-radius: 50%;
+  /* ============ Section Title ============ */
+  .section-title {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 13px;
-    flex-shrink: 0;
-  }
-  .avatar.c-1 { background: rgba(167,139,250,0.18); color: #c4b5fd; }
-  .avatar.c-2 { background: rgba(103,232,249,0.18); color: #67e8f9; }
-  .avatar.c-3 { background: rgba(251,191,36,0.18); color: #fde68a; }
-  .avatar.c-4 { background: rgba(52,211,153,0.18); color: #6ee7b7; }
-  .avatar.c-5 { background: rgba(236,72,153,0.18); color: #f9a8d4; }
-  .avatar.c-6 { background: rgba(248,113,113,0.18); color: #fca5a5; }
-
-  .pct-pill {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 99px;
-    font-size: 12px;
-    font-weight: 600;
-  }
-  .pct-pill.gain { background: rgba(52,211,153,0.16); color: var(--gain); }
-  .pct-pill.loss { background: rgba(248,113,113,0.16); color: var(--loss); }
-  .pct-pill.zero { background: rgba(150,180,210,0.12); color: var(--text-dim); }
-
-  /* ========== 3-Col Section ========== */
-  .three-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 28px;
-  }
-  .three-col .panel {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 22px 24px;
-    backdrop-filter: blur(8px);
-  }
-  .alloc-row {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 12px;
-    align-items: center;
-    padding: 10px 0;
-  }
-  .alloc-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-  }
-  .alloc-name { font-size: 13px; color: var(--text); }
-  .alloc-name b { font-weight: 700; margin-right: 4px; }
-  .alloc-bar {
-    grid-column: 2 / 3;
-    height: 6px;
-    background: rgba(120,170,230,0.08);
-    border-radius: 99px;
-    overflow: hidden;
-  }
-  .alloc-bar > span {
-    display: block;
-    height: 100%;
-    border-radius: 99px;
-    width: 0;
-    transition: width 1.6s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .alloc-pct { font-size: 13px; color: var(--text-dim); font-weight: 600; min-width: 50px; text-align: right; }
-
-  .alloc-bar-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
-
-  .top-row {
-    display: grid;
-    grid-template-columns: 28px auto 1fr auto;
     gap: 10px;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(120,170,230,0.06);
+    margin-bottom: 18px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 18px;
+    color: var(--gold);
+    text-shadow: 2px 2px 0 var(--frame-shadow);
   }
-  .top-row:last-child { border-bottom: none; }
-  .top-rank {
-    font-size: 11px;
+  .section-title .badge-mini {
+    margin-left: auto;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
     color: var(--text-faint);
-    text-align: center;
-    font-weight: 700;
+    letter-spacing: 0.06em;
   }
-  .top-rank.medal-1 { color: var(--gold); font-size: 16px; }
-  .top-rank.medal-2 { color: var(--silver); font-size: 16px; }
-  .top-rank.medal-3 { color: var(--bronze); font-size: 16px; }
-  .top-name { font-size: 13px; }
-  .top-bar {
-    grid-column: 3 / 4;
-    height: 4px;
-    background: rgba(120,170,230,0.08);
-    border-radius: 99px;
-    overflow: hidden;
-  }
-  .top-bar > span {
-    display: block;
-    height: 100%;
-    width: 0;
-    transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .top-val { font-size: 12px; font-weight: 600; min-width: 70px; text-align: right; }
 
-  /* ========== Ranking Section ========== */
-  .ranking {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 24px 28px 28px;
-    backdrop-filter: blur(8px);
-    overflow-x: auto;
+  /* ============ Crew Grid ============ */
+  .crew-section { margin-bottom: 28px; }
+  .crew-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
   }
   .crew-card {
-    display: grid;
-    grid-template-columns: 60px auto 1fr auto;
-    gap: 18px;
-    padding: 18px 18px;
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    margin-bottom: 10px;
-    background: rgba(10, 22, 42, 0.4);
-    transition: all 0.25s ease;
-    align-items: center;
+    perspective: 1000px;
+    height: 320px;
+    cursor: pointer;
+  }
+  .crew-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transform-style: preserve-3d;
+  }
+  .crew-card.flipped .crew-card-inner { transform: rotateY(180deg); }
+  .crew-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    background: var(--frame-bg);
+    border: 4px solid var(--frame-border);
+    box-shadow:
+      inset 0 0 0 4px var(--frame-bg),
+      inset 0 0 0 6px #1a3866,
+      4px 4px 0 0 var(--frame-shadow);
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .crew-card.rank-1 .crew-face { border-color: var(--gold); }
+  .crew-card.rank-2 .crew-face { border-color: var(--silver); }
+  .crew-card.rank-3 .crew-face { border-color: var(--bronze); }
+  .crew-card.skip .crew-face { opacity: 0.7; }
+
+  .crew-card:hover .crew-card-inner { transform: translate(2px, 2px); }
+  .crew-card.flipped:hover .crew-card-inner { transform: translate(2px, 2px) rotateY(180deg); }
+
+  .crew-front .rank-corner {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: var(--text-faint);
+  }
+  .crew-front .medal {
+    position: absolute;
+    top: 10px;
+    left: 14px;
+    font-size: 22px;
+  }
+  .crew-mascot-wrap {
+    text-align: center;
+    margin: 14px 0 10px;
+  }
+  .crew-mascot-wrap svg {
+    width: 64px;
+    height: 64px;
+    image-rendering: pixelated;
+    animation: bobMascot 2.6s steps(2) infinite alternate;
+  }
+  .crew-card:hover .crew-mascot-wrap svg {
+    animation: wiggle 0.5s steps(3);
+  }
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0); }
+    33%      { transform: rotate(-12deg) scale(1.1); }
+    66%      { transform: rotate(12deg) scale(1.1); }
+  }
+
+  .crew-front .name {
+    text-align: center;
+    font-family: 'DotGothic16', monospace;
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+  .crew-front .level-pill {
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .crew-front .level-pill span {
+    display: inline-block;
+    background: var(--ocean-deep);
+    border: 2px solid var(--coral-purple);
+    color: var(--coral-purple);
+    padding: 3px 10px;
+    font-size: 11px;
+  }
+  .crew-front .pct-row {
+    text-align: center;
+    margin-top: auto;
+  }
+  .crew-front .pct {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 16px;
+    text-shadow: 2px 2px 0 var(--frame-shadow);
+  }
+  .crew-front .pct.gain { color: var(--gain); }
+  .crew-front .pct.loss { color: var(--loss); }
+  .crew-front .pct.zero { color: var(--text-dim); }
+  .crew-front .money {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--text-faint);
+    margin-top: 6px;
+  }
+
+  /* HP bar (chunky pixel segments) */
+  .hp-bar {
+    margin-top: 14px;
+    height: 12px;
+    background: var(--ocean-deep);
+    border: 2px solid var(--frame-border);
     position: relative;
     overflow: hidden;
   }
-  .crew-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--rank-grad, transparent);
-    opacity: 0.05;
-    pointer-events: none;
-  }
-  .crew-card:hover {
-    border-color: var(--border-strong);
-    transform: translateX(2px);
-    background: rgba(20, 40, 70, 0.5);
-  }
-  .crew-card.rank-1 { border-color: rgba(251,191,36,0.4); --rank-grad: linear-gradient(90deg, var(--gold), transparent); }
-  .crew-card.rank-2 { border-color: rgba(203,213,225,0.3); --rank-grad: linear-gradient(90deg, var(--silver), transparent); }
-  .crew-card.rank-3 { border-color: rgba(217,119,6,0.35); --rank-grad: linear-gradient(90deg, var(--bronze), transparent); }
-  .crew-card.skip { opacity: 0.55; }
-
-  .crew-rank {
-    font-size: 28px;
-    font-weight: 800;
-    text-align: center;
-    color: var(--text-faint);
-    line-height: 1;
-  }
-  .crew-rank.medal-1 { color: var(--gold); }
-  .crew-rank.medal-2 { color: var(--silver); }
-  .crew-rank.medal-3 { color: var(--bronze); }
-  .crew-rank .medal-emoji {
-    display: block;
-    font-size: 20px;
-    margin-top: 2px;
-  }
-
-  .crew-info { min-width: 0; }
-  .crew-info .name-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 4px;
-  }
-  .crew-info .name {
-    font-size: 16px;
-    font-weight: 700;
-  }
-  .crew-info .level {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    background: rgba(124,92,255,0.12);
-    color: var(--aurora-2);
-    border: 1px solid rgba(167,139,250,0.25);
-    border-radius: 99px;
-    padding: 3px 10px;
-    font-size: 11px;
-    font-weight: 600;
-  }
-  .crew-info .badges {
-    display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
-    margin-top: 6px;
-  }
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    background: rgba(20, 40, 70, 0.7);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 2px 7px;
-    font-size: 10.5px;
-    color: var(--text-dim);
-    letter-spacing: 0.02em;
-  }
-  .badge.gold   { color: var(--gold-soft); border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.07); }
-  .badge.purple { color: var(--aurora-2); border-color: rgba(167,139,250,0.3); background: rgba(124,92,255,0.07); }
-  .badge.ice    { color: var(--ice); border-color: rgba(103,232,249,0.3); background: rgba(77,212,230,0.07); }
-  .badge.silver { color: var(--silver); border-color: rgba(203,213,225,0.25); background: rgba(203,213,225,0.05); }
-  .badge.bronze { color: #fbbf80; border-color: rgba(217,119,6,0.3); background: rgba(217,119,6,0.07); }
-
-  .crew-bar {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    min-width: 0;
-  }
-  .crew-bar .bar-track {
-    height: 8px;
-    background: rgba(120,170,230,0.08);
-    border-radius: 99px;
-    overflow: hidden;
-  }
-  .crew-bar .bar-fill {
-    display: block;
+  .hp-fill {
     height: 100%;
-    border-radius: 99px;
     width: 0;
-    transition: width 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: width 1.2s steps(20);
   }
-  .crew-bar .bar-fill.gain { background: linear-gradient(90deg, var(--gain), var(--ice)); }
-  .crew-bar .bar-fill.loss { background: linear-gradient(90deg, var(--loss), #fb7185); }
-  .crew-bar .bar-meta {
+  .hp-fill.gain { background: repeating-linear-gradient(90deg, var(--gain) 0 8px, #34d399 8px 12px); }
+  .hp-fill.loss { background: repeating-linear-gradient(90deg, var(--loss) 0 8px, #e11d48 8px 12px); }
+  .hp-fill.zero { background: var(--frame-border); }
+
+  .crew-front .flip-hint {
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--text-faint);
+    letter-spacing: 0.05em;
+  }
+
+  /* Back face */
+  .crew-back {
+    transform: rotateY(180deg);
+  }
+  .crew-back h3 {
+    font-family: 'DotGothic16', monospace;
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: var(--gold);
+  }
+  .crew-back h3 .small {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 400;
+    margin-left: 6px;
+  }
+  .crew-back .stat-row {
     display: flex;
     justify-content: space-between;
-    font-size: 11px;
-    color: var(--text-faint);
+    font-size: 12px;
+    color: var(--text-dim);
+    padding: 4px 0;
+    border-bottom: 1px dashed var(--frame-border);
   }
-  .crew-bar .bar-meta .ticker-chips {
+  .crew-back .stat-row b { color: var(--text); font-family: 'Press Start 2P', monospace; font-size: 10px; }
+  .crew-back .holdings, .crew-back .badges {
+    margin-top: 8px;
     display: flex;
     gap: 4px;
+    flex-wrap: wrap;
   }
   .ticker-chip {
-    background: rgba(120,170,230,0.08);
+    background: var(--ocean-mid);
+    color: #fff;
+    padding: 3px 8px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+  }
+  .ticker-chip.empty { color: var(--text-faint); background: var(--ocean-deep); }
+  .badge {
+    background: var(--ocean-deep);
+    border: 1px solid var(--frame-border);
+    padding: 3px 7px;
+    font-size: 10.5px;
     color: var(--text-dim);
-    padding: 1px 6px;
-    border-radius: 4px;
-    font-size: 10px;
-    font-weight: 600;
   }
+  .badge.gold   { color: var(--gold); border-color: var(--gold); }
+  .badge.purple { color: var(--coral-purple); border-color: var(--coral-purple); }
+  .badge.ice    { color: var(--gain); border-color: var(--gain); }
+  .badge.silver { color: var(--silver); border-color: var(--silver); }
+  .badge.bronze { color: var(--bronze); border-color: var(--bronze); }
 
-  .crew-numbers {
-    text-align: right;
-    font-feature-settings: 'tnum';
-    min-width: 130px;
-  }
-  .crew-numbers .pct {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 2px;
-  }
-  .crew-numbers .pct.gain { color: var(--gain); }
-  .crew-numbers .pct.loss { color: var(--loss); }
-  .crew-numbers .pct.zero { color: var(--text-dim); }
-  .crew-numbers .money {
+  .crew-back .quote {
+    margin-top: auto;
+    padding: 8px 10px;
+    background: var(--ocean-deep);
+    border: 2px solid var(--frame-border);
     font-size: 12px;
-    color: var(--text-faint);
+    color: var(--gold);
+    text-align: center;
   }
 
-  /* ========== Footer ========== */
+  .crew-card.highlighted .crew-face {
+    box-shadow:
+      inset 0 0 0 4px var(--frame-bg),
+      inset 0 0 0 6px #1a3866,
+      4px 4px 0 0 var(--frame-shadow),
+      0 0 0 4px var(--gold);
+    animation: highlight 0.6s steps(4) 3;
+  }
+  @keyframes highlight {
+    0%, 50% { transform: scale(1); }
+    51%, 100% { transform: scale(1.04); }
+  }
+
+  /* ============ Treasure ============ */
+  .treasure { margin-bottom: 28px; }
+  .cargo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .cargo {
+    background: var(--ocean-deep);
+    border: 3px solid var(--frame-border);
+    padding: 14px;
+    box-shadow: 3px 3px 0 0 var(--frame-shadow);
+    transition: transform 0.1s steps(2);
+  }
+  .cargo:hover { transform: translate(2px, 2px); box-shadow: 1px 1px 0 0 var(--frame-shadow); }
+  .cargo .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .cargo .ticker {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    padding: 4px 8px;
+    border: 2px solid #fff;
+    color: #fff;
+  }
+  .cargo .pct {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .cargo .name {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+  .cargo .bar {
+    height: 10px;
+    background: var(--ocean);
+    border: 2px solid var(--frame-border);
+  }
+  .cargo .bar > span {
+    display: block;
+    height: 100%;
+    width: 0;
+    transition: width 1.2s steps(20);
+  }
+
+  /* ============ Footer ============ */
   footer {
     text-align: center;
-    margin-top: 40px;
+    margin-top: 48px;
     color: var(--text-faint);
     font-size: 12px;
     line-height: 1.7;
   }
-  footer .compass {
-    font-size: 20px;
-    margin-bottom: 6px;
-    display: inline-block;
-    animation: spin 22s linear infinite;
+  footer .icons { font-size: 18px; margin-bottom: 8px; letter-spacing: 0.4em; }
+
+  /* ============ Confetti ============ */
+  .confetti-stage {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
   }
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+  .confetti {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    will-change: transform, opacity;
   }
 
-  /* ========== Responsive ========== */
+  /* ============ Toast ============ */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    background: var(--frame-bg);
+    border: 4px solid var(--gold);
+    color: var(--text);
+    padding: 14px 24px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 14px;
+    box-shadow: 4px 4px 0 0 var(--frame-shadow);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
+    opacity: 0;
+    z-index: 9998;
+    max-width: 90vw;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  /* ============ Responsive ============ */
   @media (max-width: 920px) {
-    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-    .three-col { grid-template-columns: 1fr; }
-    .ticker-stats { grid-template-columns: 1fr; }
-    .decision-row { grid-template-columns: repeat(3, 1fr); }
-    .crew-card { grid-template-columns: 50px 1fr; }
-    .crew-bar, .crew-numbers { grid-column: 1 / 3; text-align: left; }
-    .crew-numbers { display: flex; gap: 12px; align-items: baseline; }
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .quest-stats { grid-template-columns: repeat(2, 1fr); }
+    .crew-grid { grid-template-columns: repeat(2, 1fr); }
+    .cargo-grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 560px) {
-    .container { padding: 20px 16px 60px; }
-    .kpi-grid { grid-template-columns: 1fr 1fr; }
-    .kpi .value { font-size: 24px; }
-    .voyage-map { height: 220px; }
-    .round-tabs { grid-template-columns: repeat(4, 1fr); font-size: 12px; }
-    .round-tab { padding: 10px 6px; font-size: 12px; }
-    .ticker-card { grid-template-columns: auto 1fr; }
-    .ticker-price { grid-column: 1 / 3; text-align: left; margin-top: 8px; }
+    .container { padding: 18px 12px 60px; }
+    .crew-grid { grid-template-columns: 1fr; }
+    .voyage-map { height: 280px; }
+    .kpi .val { font-size: 13px; }
+    .quest-head .price { font-size: 18px; }
+    .brand h1 { font-size: 18px; }
+    .voyage-title h2 { font-size: 16px; }
   }
 </style>
 </head>
 <body>
 
-<div class="aurora"></div>
-<div class="stars"></div>
+<div class="lightrays"></div>
+<div class="bubbles" id="bubbles"></div>
 
-<svg class="iceberg b1" width="180" height="120" viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg">
-  <polygon points="20,80 60,20 100,40 140,15 170,80" fill="#a5d8e6" opacity="0.7"/>
-  <polygon points="20,80 60,20 80,60 50,75" fill="#67e8f9" opacity="0.5"/>
-  <polygon points="20,80 170,80 160,100 30,100" fill="#4dd4e6" opacity="0.4"/>
+<!-- 픽셀 해초 (왼쪽) -->
+<svg class="kelp-strip left" viewBox="0 0 80 300" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+  <g fill="#166534">
+    <rect x="20" y="60"  width="6" height="240"/>
+    <rect x="14" y="70"  width="6" height="6"/>
+    <rect x="26" y="90"  width="6" height="6"/>
+    <rect x="14" y="120" width="6" height="6"/>
+    <rect x="26" y="150" width="6" height="6"/>
+    <rect x="14" y="180" width="6" height="6"/>
+    <rect x="26" y="210" width="6" height="6"/>
+  </g>
+  <g fill="#4ade80">
+    <rect x="40" y="100" width="4" height="200"/>
+    <rect x="36" y="110" width="4" height="4"/>
+    <rect x="44" y="130" width="4" height="4"/>
+    <rect x="36" y="160" width="4" height="4"/>
+    <rect x="44" y="190" width="4" height="4"/>
+  </g>
+  <g fill="#166534">
+    <rect x="58" y="80"  width="5" height="220"/>
+    <rect x="53" y="100" width="5" height="5"/>
+    <rect x="63" y="130" width="5" height="5"/>
+    <rect x="53" y="170" width="5" height="5"/>
+  </g>
 </svg>
-<svg class="iceberg b2" width="200" height="130" viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg">
-  <polygon points="20,90 70,30 120,60 160,20 185,90" fill="#a5d8e6" opacity="0.7"/>
-  <polygon points="20,90 185,90 175,108 30,108" fill="#4dd4e6" opacity="0.4"/>
+
+<svg class="kelp-strip right" viewBox="0 0 80 300" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+  <g fill="#166534">
+    <rect x="54" y="50"  width="6" height="250"/>
+    <rect x="60" y="65"  width="6" height="6"/>
+    <rect x="48" y="95"  width="6" height="6"/>
+    <rect x="60" y="125" width="6" height="6"/>
+    <rect x="48" y="155" width="6" height="6"/>
+    <rect x="60" y="185" width="6" height="6"/>
+  </g>
+  <g fill="#4ade80">
+    <rect x="36" y="90" width="4" height="210"/>
+    <rect x="32" y="100" width="4" height="4"/>
+    <rect x="40" y="130" width="4" height="4"/>
+    <rect x="32" y="160" width="4" height="4"/>
+  </g>
+  <g fill="#166534">
+    <rect x="18" y="70"  width="5" height="230"/>
+    <rect x="13" y="100" width="5" height="5"/>
+    <rect x="23" y="140" width="5" height="5"/>
+  </g>
 </svg>
-<svg class="iceberg b3" width="140" height="90" viewBox="0 0 140 90" xmlns="http://www.w3.org/2000/svg">
-  <polygon points="15,65 50,15 90,30 125,65" fill="#a5d8e6" opacity="0.7"/>
-  <polygon points="15,65 125,65 115,80 25,80" fill="#4dd4e6" opacity="0.4"/>
+
+<!-- 헤엄치는 물고기 (배경) -->
+<svg class="swim-fish" style="top: 18%; animation-duration: 32s; animation-delay: -3s;" width="32" height="20" viewBox="0 0 16 10" shape-rendering="crispEdges">
+  <g fill="#fcd34d"><rect x="3" y="3" width="9" height="4"/><rect x="2" y="2" width="2" height="6"/><rect x="11" y="2" width="2" height="2"/><rect x="11" y="6" width="2" height="2"/><rect x="13" y="0" width="3" height="3"/><rect x="13" y="7" width="3" height="3"/></g>
+  <rect x="9" y="4" width="1" height="1" fill="#000"/>
 </svg>
+<svg class="swim-fish" style="top: 42%; animation-duration: 48s; animation-delay: -10s; animation-name: swimReverse;" width="40" height="22" viewBox="0 0 20 12" shape-rendering="crispEdges">
+  <g fill="#fb7185"><rect x="3" y="3" width="13" height="6"/><rect x="2" y="2" width="2" height="8"/><rect x="15" y="2" width="2" height="2"/><rect x="15" y="8" width="2" height="2"/><rect x="17" y="0" width="3" height="3"/><rect x="17" y="9" width="3" height="3"/></g>
+  <rect x="13" y="5" width="1" height="1" fill="#000"/>
+</svg>
+<svg class="swim-fish" style="top: 65%; animation-duration: 38s; animation-delay: -22s;" width="28" height="16" viewBox="0 0 14 8" shape-rendering="crispEdges">
+  <g fill="#7dd3fc"><rect x="3" y="2" width="8" height="4"/><rect x="2" y="1" width="2" height="6"/><rect x="10" y="1" width="2" height="2"/><rect x="10" y="5" width="2" height="2"/><rect x="12" y="0" width="2" height="2"/><rect x="12" y="6" width="2" height="2"/></g>
+  <rect x="8" y="3" width="1" height="1" fill="#000"/>
+</svg>
+<svg class="swim-fish" style="top: 80%; animation-duration: 45s; animation-delay: -15s; animation-name: swimReverse;" width="32" height="18" viewBox="0 0 16 9" shape-rendering="crispEdges">
+  <g fill="#c084fc"><rect x="3" y="2" width="9" height="5"/><rect x="2" y="1" width="2" height="7"/><rect x="11" y="1" width="2" height="2"/><rect x="11" y="6" width="2" height="2"/><rect x="13" y="0" width="3" height="3"/><rect x="13" y="6" width="3" height="3"/></g>
+  <rect x="9" y="3" width="1" height="1" fill="#000"/>
+</svg>
+
+<!-- ===== 픽셀 마스코트 SVG 정의 ===== -->
+<svg width="0" height="0" style="position: absolute; pointer-events: none;">
+  <defs>
+    <!-- 🐋 범고래 -->
+    <symbol id="m-orca" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <g fill="#1a1a2e">
+        <rect x="2" y="6" width="11" height="5"/>
+        <rect x="3" y="5" width="9" height="1"/>
+        <rect x="4" y="4" width="7" height="1"/>
+        <rect x="2" y="11" width="11" height="1"/>
+        <rect x="13" y="6" width="2" height="3"/>
+        <rect x="11" y="3" width="2" height="2"/>
+        <rect x="0" y="6" width="2" height="2"/>
+        <rect x="0" y="9" width="2" height="2"/>
+      </g>
+      <g fill="#fff">
+        <rect x="3" y="9" width="6" height="2"/>
+        <rect x="4" y="10" width="4" height="1"/>
+        <rect x="11" y="6" width="2" height="2"/>
+      </g>
+      <rect x="11" y="6" width="1" height="1" fill="#000"/>
+      <rect x="14" y="6" width="1" height="1" fill="#fff"/>
+    </symbol>
+
+    <!-- 🐻‍❄️ 북극곰 -->
+    <symbol id="m-polar" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <g fill="#fff">
+        <rect x="4" y="4" width="8" height="9"/>
+        <rect x="3" y="5" width="10" height="7"/>
+        <rect x="3" y="3" width="2" height="3"/>
+        <rect x="11" y="3" width="2" height="3"/>
+      </g>
+      <g fill="#e2e8f0">
+        <rect x="3" y="11" width="10" height="2"/>
+        <rect x="2" y="13" width="3" height="1"/>
+        <rect x="11" y="13" width="3" height="1"/>
+      </g>
+      <rect x="6" y="7" width="1" height="1" fill="#1a1a2e"/>
+      <rect x="9" y="7" width="1" height="1" fill="#1a1a2e"/>
+      <rect x="7" y="9" width="2" height="1" fill="#1a1a2e"/>
+      <rect x="3" y="3" width="1" height="1" fill="#e2e8f0"/>
+      <rect x="12" y="3" width="1" height="1" fill="#e2e8f0"/>
+    </symbol>
+
+    <!-- 🦭 바다표범 -->
+    <symbol id="m-seal" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <g fill="#94a3b8">
+        <rect x="3" y="6" width="10" height="6"/>
+        <rect x="4" y="5" width="8" height="1"/>
+        <rect x="2" y="8" width="2" height="3"/>
+        <rect x="12" y="8" width="2" height="3"/>
+        <rect x="13" y="9" width="2" height="2"/>
+      </g>
+      <g fill="#cbd5e1">
+        <rect x="4" y="9" width="8" height="3"/>
+      </g>
+      <rect x="6" y="7" width="1" height="1" fill="#1a1a2e"/>
+      <rect x="9" y="7" width="1" height="1" fill="#1a1a2e"/>
+      <rect x="7" y="9" width="2" height="1" fill="#1a1a2e"/>
+      <rect x="14" y="9" width="2" height="1" fill="#94a3b8"/>
+      <rect x="14" y="11" width="2" height="1" fill="#94a3b8"/>
+    </symbol>
+
+    <!-- 🐧 펭귄 -->
+    <symbol id="m-penguin" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <g fill="#1a1a2e">
+        <rect x="5" y="3" width="6" height="11"/>
+        <rect x="4" y="4" width="8" height="9"/>
+        <rect x="3" y="7" width="2" height="4"/>
+        <rect x="11" y="7" width="2" height="4"/>
+      </g>
+      <g fill="#fff">
+        <rect x="6" y="6" width="4" height="7"/>
+        <rect x="5" y="7" width="6" height="5"/>
+      </g>
+      <rect x="6" y="5" width="1" height="1" fill="#fff"/>
+      <rect x="9" y="5" width="1" height="1" fill="#fff"/>
+      <rect x="6" y="6" width="1" height="1" fill="#1a1a2e"/>
+      <rect x="9" y="6" width="1" height="1" fill="#1a1a2e"/>
+      <rect x="7" y="7" width="2" height="1" fill="#ff8c00"/>
+      <rect x="4" y="14" width="3" height="1" fill="#ff8c00"/>
+      <rect x="9" y="14" width="3" height="1" fill="#ff8c00"/>
+    </symbol>
+
+    <!-- 🐟 청어 -->
+    <symbol id="m-fish" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <g fill="#7dd3fc">
+        <rect x="3" y="6" width="9" height="4"/>
+        <rect x="4" y="5" width="7" height="1"/>
+        <rect x="4" y="10" width="7" height="1"/>
+        <rect x="2" y="7" width="1" height="2"/>
+        <rect x="11" y="5" width="1" height="2"/>
+        <rect x="11" y="9" width="1" height="2"/>
+      </g>
+      <g fill="#0ea5e9">
+        <rect x="12" y="4" width="2" height="3"/>
+        <rect x="12" y="9" width="2" height="3"/>
+        <rect x="14" y="3" width="1" height="2"/>
+        <rect x="14" y="11" width="1" height="2"/>
+      </g>
+      <rect x="9" y="7" width="1" height="1" fill="#000"/>
+      <rect x="5" y="7" width="2" height="1" fill="#fff" opacity="0.6"/>
+    </symbol>
+
+    <!-- 🐚 조개 -->
+    <symbol id="m-shell" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <g fill="#ff9eb5">
+        <rect x="4" y="4" width="8" height="8"/>
+        <rect x="3" y="5" width="10" height="6"/>
+        <rect x="2" y="7" width="12" height="3"/>
+      </g>
+      <g fill="#ffc4d2">
+        <rect x="5" y="5" width="6" height="2"/>
+        <rect x="6" y="4" width="4" height="1"/>
+      </g>
+      <g fill="#e85d8b">
+        <rect x="5" y="11" width="1" height="1"/>
+        <rect x="7" y="11" width="1" height="1"/>
+        <rect x="9" y="11" width="1" height="1"/>
+        <rect x="10" y="11" width="1" height="1"/>
+        <rect x="6" y="7" width="1" height="3"/>
+        <rect x="9" y="7" width="1" height="3"/>
+        <rect x="7" y="6" width="2" height="1"/>
+      </g>
+    </symbol>
+
+    <!-- 🌊 파도 -->
+    <symbol id="m-wave" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <g fill="#7dd3fc">
+        <rect x="2" y="8" width="2" height="2"/>
+        <rect x="4" y="6" width="2" height="2"/>
+        <rect x="6" y="8" width="2" height="2"/>
+        <rect x="8" y="6" width="2" height="2"/>
+        <rect x="10" y="8" width="2" height="2"/>
+        <rect x="12" y="6" width="2" height="2"/>
+      </g>
+      <g fill="#bae6fd">
+        <rect x="2" y="10" width="2" height="2"/>
+        <rect x="4" y="8" width="2" height="2"/>
+        <rect x="6" y="10" width="2" height="2"/>
+        <rect x="8" y="8" width="2" height="2"/>
+        <rect x="10" y="10" width="2" height="2"/>
+        <rect x="12" y="8" width="2" height="2"/>
+      </g>
+      <g fill="#0284c7">
+        <rect x="2" y="12" width="12" height="2"/>
+      </g>
+    </symbol>
+
+    <!-- ⚓ 닻 -->
+    <symbol id="m-anchor" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <g fill="#cbd5e1">
+        <rect x="7" y="2" width="2" height="2"/>
+        <rect x="6" y="3" width="4" height="1"/>
+        <rect x="7" y="4" width="2" height="6"/>
+        <rect x="4" y="6" width="8" height="1"/>
+        <rect x="3" y="10" width="3" height="1"/>
+        <rect x="2" y="11" width="2" height="1"/>
+        <rect x="10" y="10" width="3" height="1"/>
+        <rect x="12" y="11" width="2" height="1"/>
+        <rect x="3" y="9" width="1" height="1"/>
+        <rect x="12" y="9" width="1" height="1"/>
+      </g>
+      <g fill="#94a3b8">
+        <rect x="7" y="3" width="1" height="1"/>
+      </g>
+    </symbol>
+
+    <!-- 픽셀 배 -->
+    <symbol id="m-ship" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <g fill="#7c2d12"><!-- 선체 -->
+        <rect x="2" y="11" width="12" height="3"/>
+        <rect x="3" y="10" width="10" height="1"/>
+      </g>
+      <g fill="#a16207"><!-- 갑판 -->
+        <rect x="4" y="9" width="8" height="1"/>
+      </g>
+      <g fill="#fcd34d"><!-- 돛대 -->
+        <rect x="7" y="2" width="2" height="9"/>
+      </g>
+      <g fill="#fff"><!-- 돛 -->
+        <rect x="3" y="3" width="4" height="6"/>
+        <rect x="9" y="3" width="4" height="6"/>
+        <rect x="2" y="4" width="1" height="4"/>
+        <rect x="13" y="4" width="1" height="4"/>
+      </g>
+      <g fill="#ef4444"><!-- 깃발 -->
+        <rect x="9" y="1" width="3" height="2"/>
+        <rect x="8" y="1" width="1" height="1"/>
+      </g>
+      <g fill="#0ea5e9"><!-- 창문 -->
+        <rect x="4" y="11" width="1" height="1"/>
+        <rect x="7" y="11" width="1" height="1"/>
+        <rect x="10" y="11" width="1" height="1"/>
+      </g>
+    </symbol>
+
+    <!-- 컴퍼스 -->
+    <symbol id="m-compass" viewBox="0 0 16 16" shape-rendering="crispEdges">
+      <g fill="#fcd34d">
+        <rect x="5" y="2" width="6" height="1"/>
+        <rect x="3" y="3" width="10" height="1"/>
+        <rect x="2" y="4" width="12" height="2"/>
+        <rect x="2" y="6" width="2" height="6"/>
+        <rect x="12" y="6" width="2" height="6"/>
+        <rect x="2" y="10" width="12" height="2"/>
+        <rect x="3" y="12" width="10" height="1"/>
+        <rect x="5" y="13" width="6" height="1"/>
+      </g>
+      <g fill="#1a1a2e">
+        <rect x="4" y="5" width="8" height="6"/>
+        <rect x="5" y="4" width="6" height="1"/>
+        <rect x="5" y="11" width="6" height="1"/>
+      </g>
+      <g fill="#fff">
+        <rect x="7" y="5" width="2" height="3"/>
+      </g>
+      <g fill="#ef4444">
+        <rect x="7" y="8" width="2" height="3"/>
+      </g>
+      <rect x="7" y="7" width="2" height="2" fill="#fcd34d"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="confetti-stage" id="confettiStage"></div>
+<div class="toast" id="toast">⚓</div>
 
 <div class="container">
 
   <header>
     <div class="brand">
-      <div class="logo">⚓</div>
+      <div class="logo-pixel">
+        <svg viewBox="0 0 16 16"><use href="#m-orca"/></svg>
+      </div>
       <div>
         <h1>팀 <span class="accent">오호츠크</span> 항해일지</h1>
-        <p>HFK INVESTMENT VOYAGE · OKHOTSK CREW</p>
+        <p>HFK INVESTMENT VOYAGE</p>
       </div>
     </div>
-    <div class="header-meta">
-      <span class="pulse"></span>
-      <span>LIVE · 4월 27일 오후 07:37 갱신</span>
+    <div class="header-actions">
+      <div class="live-pill">
+        <span class="dot"></span>
+        <span>LIVE 04/27 19:37</span>
+      </div>
+      <button class="compass-btn" id="compassBtn" title="컴퍼스를 돌려 랜덤 선원 만나기">
+        <svg viewBox="0 0 16 16"><use href="#m-compass"/></svg>
+      </button>
     </div>
   </header>
 
-  <!-- KPI -->
-  <section class="kpi-grid">
-    <div class="kpi gain" style="--accent-grad: linear-gradient(135deg, #34d399, #67e8f9);">
-      <div class="top-stripe"></div>
-      <div class="label"><span class="icon">🌊</span>전체 항해 수익률</div>
-      <div class="value" data-count="7.14" data-suffix="%" data-prefix="+">+0.00%</div>
-      <div class="sub">+$375.45 평가 손익</div>
-    </div>
-    <div class="kpi member" style="--accent-grad: linear-gradient(135deg, #7c5cff, #a78bfa);">
-      <div class="top-stripe"></div>
-      <div class="label"><span class="icon">⛵</span>총 출항 자본</div>
-      <div class="value" data-count="5256.63" data-prefix="$">$0.00</div>
-      <div class="sub">9명의 선원이 함께 항해 중</div>
-    </div>
-    <div class="kpi gold" style="--accent-grad: linear-gradient(135deg, #fbbf24, #fde68a);">
-      <div class="top-stripe"></div>
-      <div class="label"><span class="icon">🏆</span>수익률 1등 선원</div>
-      <div class="value" style="font-size: 24px;">이수연 <span style="font-size:18px; color: var(--gain);">+20.14%</span></div>
-      <div class="sub">🐋 범고래 선장 등급 도달</div>
-      <span class="sparkle" style="top:14px; right:18px; animation-delay:0s;"></span>
-      <span class="sparkle" style="top:30px; right:38px; animation-delay:0.8s;"></span>
-      <span class="sparkle" style="top:60px; right:14px; animation-delay:1.6s;"></span>
-    </div>
-    <div class="kpi gold" style="--accent-grad: linear-gradient(135deg, #fbbf24, #ec4899);">
-      <div class="top-stripe"></div>
-      <div class="label"><span class="icon">💰</span>수익금 1등 선원</div>
-      <div class="value" style="font-size: 24px;">김하나 <span style="font-size:18px; color: var(--gain);">+$90.60</span></div>
-      <div class="sub">🐧 펭귄 사진가 · 4종목 보유</div>
+  <!-- Voyage Hero -->
+  <section class="voyage-hero">
+    <div class="pf">
+      <div class="voyage-title">
+        <h2>🗺️ 항해 지도</h2>
+        <span class="quest-tag">QUEST 3 / 4</span>
+        <p>1·2회차 항구를 지나 지금 3회차 NKE 해역을 항해 중. 항구를 클릭해 회차 이동.</p>
+      </div>
+      <div class="voyage-map" id="voyageMap"></div>
     </div>
   </section>
 
-  <!-- 항해 지도 -->
-  <section class="voyage-card">
-    <div class="section-title">
-      <span class="dot"></span>
-      <span>항해 지도 · 투자 라운드 진행</span>
-      <span class="badge-mini">1·2회차 완료 · 3회차 항해 중</span>
-    </div>
-    <div class="voyage-map" id="voyageMap">
-      <!-- SVG path drawn via JS -->
-    </div>
-  </section>
-
-  <!-- Round Tabs -->
   <div class="round-tabs" id="roundTabs">
-    <div class="round-tab" data-round="1">1회차</div>
-    <div class="round-tab" data-round="2">2회차</div>
-    <div class="round-tab active live" data-round="3">3회차 <span class="live-dot"></span></div>
-    <div class="round-tab" data-round="4">4회차</div>
+    <button class="round-tab" data-round="1">1회차 · PL</button>
+    <button class="round-tab" data-round="2">2회차 · NVDA·GOOGL</button>
+    <button class="round-tab active" data-round="3">3회차 · NKE</button>
+    <button class="round-tab" data-round="4">4회차 · 미정</button>
   </div>
 
-  <!-- Round Detail -->
-  <section class="round-detail" id="roundDetail">
-    <h2>3회차 선정 종목 — 2026-04-20</h2>
-    <div class="ticker-card">
-      <div class="ticker-badge">NKE</div>
-      <div class="ticker-info">
-        <div class="name">나이키</div>
-        <div class="sector">스포츠 의류 / 소비재</div>
-      </div>
-      <div class="ticker-price">
-        <div class="price loss">$44.69</div>
-        <div class="change loss">▼ -0.47% ($-0.21)</div>
-      </div>
-    </div>
-    <div class="ticker-stats">
-      <div class="ticker-stat">
-        <div class="label">매수가</div>
-        <div class="val">$44.90</div>
-      </div>
-      <div class="ticker-stat">
-        <div class="label">현재가</div>
-        <div class="val" style="color: var(--loss);">$44.69</div>
-      </div>
-      <div class="ticker-stat">
-        <div class="label">팀 보유</div>
-        <div class="val">35주</div>
-      </div>
-    </div>
-    <div class="decision-row">
-      <div class="decision-btn strong-buy">강력 매수</div>
-      <div class="decision-btn">매수</div>
-      <div class="decision-btn active">보유</div>
-      <div class="decision-btn">매도</div>
-      <div class="decision-btn sell">강력 매도</div>
-    </div>
-    <div class="opinion">
-      <strong>💡 의견:</strong> 'Win Now' 구조조정으로 비용 절감 중이나 중국 매출 -20% 전망·Converse -35% 등 단기 실적 회복 불확실. 2027년 2월 분기부터 매출 성장 재개 예상
-    </div>
-    <div class="news-title">📰 주요 뉴스</div>
-    <div class="news-list">
-      <div class="news-item">
-        <span class="news-dot red"></span>
-        <div class="news-text">
-          <div class="title">2차 인력 감축 단행</div>
-          <div class="detail">기술 부서 중심 1,400명(전체 2%) 추가 감원, Win Now 턴어라운드 전략 가속화</div>
+  <!-- Quest -->
+  <section class="quest" id="questSection">
+    <div class="pf">
+      <div class="quest-head">
+        <div class="ticker-big">NKE</div>
+        <div>
+          <div class="name">나이키</div>
+          <div class="sector">스포츠 의류 · 소비재</div>
         </div>
-        <div class="news-date">2026-04-15</div>
-      </div>
-      <div class="news-item">
-        <span class="news-dot red"></span>
-        <div class="news-text">
-          <div class="title">중국 매출 -20% 전망</div>
-          <div class="detail">현 분기 중국 추가 급락, Converse YoY -35% 지속. JPMorgan 등 복수 증권사 하향 조정</div>
+        <div class="price-block">
+          <div class="price">$44.69</div>
+          <div class="change">▼ -0.47% ($-0.21)</div>
         </div>
-        <div class="news-date">2026-04-10</div>
       </div>
-      <div class="news-item">
-        <span class="news-dot yellow"></span>
-        <div class="news-text">
-          <div class="title">혁신 총괄 임원 교체</div>
-          <div class="detail">Tony Bignell 퇴임·Andy Caine 선임, 제품 혁신 방향 재정비 중</div>
+      <div class="quest-stats">
+        <div class="quest-stat">
+          <div class="lbl">매수가</div>
+          <div class="v">$44.90</div>
         </div>
-        <div class="news-date">2026-04-08</div>
+        <div class="quest-stat">
+          <div class="lbl">현재가</div>
+          <div class="v" style="color: var(--loss);">$44.69</div>
+        </div>
+        <div class="quest-stat">
+          <div class="lbl">팀 보유</div>
+          <div class="v">35주</div>
+        </div>
+        <div class="quest-stat decision">
+          <div class="lbl">팀 결정</div>
+          <div class="v">보유</div>
+        </div>
       </div>
-      <div class="news-item">
-        <span class="news-dot yellow"></span>
-        <div class="news-text">
-          <div class="title">52주 최저가 근접</div>
-          <div class="detail">현재 $44.69, 52주 저점 $42.09 근접. 밸류에이션 매력 vs 실적 불확실성 사이 관망세</div>
+      <div class="quest-opinion">
+        <strong>💡 의견</strong> · 'Win Now' 구조조정으로 비용 절감 중이나 중국 매출 -20% 전망·Converse -35% 등 단기 실적 회복 불확실. 2027년 2월 분기부터 매출 성장 재개 예상.
+      </div>
+      <button class="news-toggle" id="newsToggle">
+        <span>📜 항해일지 펼치기 · 주요 뉴스 4건</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="news-list" id="newsList">
+        <div class="news-list-inner">
+          <div class="news-item">
+            <span class="news-dot red"></span>
+            <div class="news-text">
+              <div class="title">2차 인력 감축 단행</div>
+              <div class="detail">기술 부서 중심 1,400명(전체 2%) 추가 감원, Win Now 턴어라운드 전략 가속화</div>
+            </div>
+            <div class="news-date">2026-04-15</div>
+          </div>
+          <div class="news-item">
+            <span class="news-dot red"></span>
+            <div class="news-text">
+              <div class="title">중국 매출 -20% 전망</div>
+              <div class="detail">현 분기 중국 추가 급락, Converse YoY -35% 지속. JPMorgan 등 복수 증권사 하향 조정</div>
+            </div>
+            <div class="news-date">2026-04-10</div>
+          </div>
+          <div class="news-item">
+            <span class="news-dot yellow"></span>
+            <div class="news-text">
+              <div class="title">혁신 총괄 임원 교체</div>
+              <div class="detail">Tony Bignell 퇴임·Andy Caine 선임, 제품 혁신 방향 재정비 중</div>
+            </div>
+            <div class="news-date">2026-04-08</div>
+          </div>
+          <div class="news-item">
+            <span class="news-dot yellow"></span>
+            <div class="news-text">
+              <div class="title">52주 최저가 근접</div>
+              <div class="detail">현재 $44.69, 52주 저점 $42.09 근접. 밸류에이션 매력 vs 실적 불확실성 사이 관망세</div>
+            </div>
+            <div class="news-date">2026-04-24</div>
+          </div>
         </div>
-        <div class="news-date">2026-04-24</div>
       </div>
     </div>
   </section>
 
-  <!-- 3회차 멤버별 -->
-  <section class="round-members">
+  <!-- KPI -->
+  <section class="kpis">
+    <div class="kpi gain">
+      <div class="pf gain">
+        <svg class="kpi-mascot" viewBox="0 0 16 16"><use href="#m-wave"/></svg>
+        <div class="lbl">전체 항해 수익률</div>
+        <div class="val" data-count="7.14" data-prefix="+" data-suffix="%">+0.00%</div>
+        <div class="sub">+$375.45 평가 손익</div>
+      </div>
+    </div>
+    <div class="kpi purple">
+      <div class="pf purple">
+        <svg class="kpi-mascot" viewBox="0 0 16 16"><use href="#m-ship"/></svg>
+        <div class="lbl">총 출항 자본</div>
+        <div class="val" data-count="5256.63" data-prefix="$">$0.00</div>
+        <div class="sub">선원 9명이 함께 출항</div>
+      </div>
+    </div>
+    <div class="kpi gold">
+      <div class="pf gold">
+        <svg class="kpi-mascot" viewBox="0 0 16 16"><use href="#m-orca"/></svg>
+        <div class="lbl">수익률 1등</div>
+        <div class="name-line">이수연</div>
+        <div class="val">+20.14%</div>
+      </div>
+    </div>
+    <div class="kpi gold">
+      <div class="pf coral">
+        <svg class="kpi-mascot" viewBox="0 0 16 16"><use href="#m-shell"/></svg>
+        <div class="lbl">수익금 1등</div>
+        <div class="name-line">김하나</div>
+        <div class="val">+$90.60</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Crew Grid -->
+  <section class="crew-section">
     <div class="section-title">
-      <span class="dot"></span>
-      <span>3회차 선원별 NKE 매입 현황</span>
+      🧊 오호츠크 선원 명부
+      <span class="badge-mini">CARD TO FLIP</span>
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th>선원</th>
-          <th>수량</th>
-          <th>매수가</th>
-          <th>투자금</th>
-          <th>평가금</th>
-          <th>수익금</th>
-          <th>수익률</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><div class="member-cell"><div class="avatar c-1">김</div>김하나</div></td>
-          <td>10주</td>
-          <td>$44.69</td>
-          <td>$446.90</td>
-          <td>$446.90</td>
-          <td style="color: var(--text-dim);">+$0.00</td>
-          <td><span class="pct-pill zero">+0.00%</span></td>
-        </tr>
-        <tr>
-          <td><div class="member-cell"><div class="avatar c-1">김</div>김재윤</div></td>
-          <td>20주</td>
-          <td>$45.00</td>
-          <td>$900.00</td>
-          <td>$893.80</td>
-          <td style="color: var(--loss);">-$6.20</td>
-          <td><span class="pct-pill loss">-0.69%</span></td>
-        </tr>
-        <tr>
-          <td><div class="member-cell"><div class="avatar c-2">신</div>신선아</div></td>
-          <td>5주</td>
-          <td>$45.00</td>
-          <td>$225.00</td>
-          <td>$223.45</td>
-          <td style="color: var(--loss);">-$1.55</td>
-          <td><span class="pct-pill loss">-0.69%</span></td>
-        </tr>
-        <tr>
-          <td><div class="member-cell"><div class="avatar c-5">박</div>박지원</div></td>
-          <td colspan="6" class="skip">⚓ 미참여 — 다음 항구에서 다시 만나요</td>
-        </tr>
-        <tr>
-          <td><div class="member-cell"><div class="avatar c-3">윤</div>윤다혜</div></td>
-          <td colspan="6" class="skip">⚓ 미참여</td>
-        </tr>
-        <tr>
-          <td><div class="member-cell"><div class="avatar c-2">이</div>이주영</div></td>
-          <td colspan="6" class="skip">⚓ 미참여</td>
-        </tr>
-        <tr>
-          <td><div class="member-cell"><div class="avatar c-2">이</div>이수연</div></td>
-          <td colspan="6" class="skip">⚓ 미참여</td>
-        </tr>
-        <tr>
-          <td><div class="member-cell"><div class="avatar c-4">정</div>정호준</div></td>
-          <td colspan="6" class="skip">⚓ 미참여</td>
-        </tr>
-        <tr>
-          <td><div class="member-cell"><div class="avatar c-6">조</div>조진서</div></td>
-          <td colspan="6" class="skip">⚓ 미참여</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="crew-grid" id="crewGrid"></div>
   </section>
 
-  <!-- 3-Col -->
-  <section class="three-col">
-    <div class="panel">
-      <div class="section-title"><span class="dot"></span>종목별 화물 비중</div>
-      <div class="alloc-bar-grid" id="allocList">
-        <div class="alloc-row">
-          <span class="alloc-dot" style="background: #7c5cff;"></span>
-          <span class="alloc-name"><b>PL</b>플래닛 랩스</span>
-          <div class="alloc-bar"><span style="background: #7c5cff;" data-w="42.8"></span></div>
-          <span class="alloc-pct">42.8%</span>
+  <!-- Treasure -->
+  <section class="treasure">
+    <div class="pf">
+      <div class="section-title">
+        📦 화물 비중
+        <span class="badge-mini">4 CARGO BOXES</span>
+      </div>
+      <div class="cargo-grid">
+        <div class="cargo">
+          <div class="top">
+            <span class="ticker" style="background: #7c5cff;">PL</span>
+            <span class="pct">42.8%</span>
+          </div>
+          <div class="name">🛰️ 플래닛 랩스</div>
+          <div class="bar"><span style="background: #a78bfa;" data-w="42.8"></span></div>
         </div>
-        <div class="alloc-row">
-          <span class="alloc-dot" style="background: #f87171;"></span>
-          <span class="alloc-name"><b>NKE</b>나이키</span>
-          <div class="alloc-bar"><span style="background: #f87171;" data-w="27.8"></span></div>
-          <span class="alloc-pct">27.8%</span>
+        <div class="cargo">
+          <div class="top">
+            <span class="ticker" style="background: #f43f5e;">NKE</span>
+            <span class="pct">27.8%</span>
+          </div>
+          <div class="name">👟 나이키</div>
+          <div class="bar"><span style="background: #fb7185;" data-w="27.8"></span></div>
         </div>
-        <div class="alloc-row">
-          <span class="alloc-dot" style="background: #34d399;"></span>
-          <span class="alloc-name"><b>GOOGL</b>알파벳</span>
-          <div class="alloc-bar"><span style="background: #34d399;" data-w="18.3"></span></div>
-          <span class="alloc-pct">18.3%</span>
+        <div class="cargo">
+          <div class="top">
+            <span class="ticker" style="background: #10b981;">GOOGL</span>
+            <span class="pct">18.3%</span>
+          </div>
+          <div class="name">🔍 알파벳</div>
+          <div class="bar"><span style="background: #4ade80;" data-w="18.3"></span></div>
         </div>
-        <div class="alloc-row">
-          <span class="alloc-dot" style="background: #fbbf24;"></span>
-          <span class="alloc-name"><b>NVDA</b>엔비디아</span>
-          <div class="alloc-bar"><span style="background: #fbbf24;" data-w="11.1"></span></div>
-          <span class="alloc-pct">11.1%</span>
+        <div class="cargo">
+          <div class="top">
+            <span class="ticker" style="background: #f59e0b;">NVDA</span>
+            <span class="pct">11.1%</span>
+          </div>
+          <div class="name">🎮 엔비디아</div>
+          <div class="bar"><span style="background: #fcd34d;" data-w="11.1"></span></div>
         </div>
       </div>
     </div>
-
-    <div class="panel">
-      <div class="section-title"><span class="dot"></span>수익률 TOP 선원</div>
-      <div id="topPctList"></div>
-    </div>
-
-    <div class="panel">
-      <div class="section-title"><span class="dot"></span>수익금 TOP 선원</div>
-      <div id="topProfitList"></div>
-    </div>
-  </section>
-
-  <!-- 전체 랭킹 (선원 명부) -->
-  <section class="ranking">
-    <div class="section-title">
-      <span class="dot"></span>
-      <span>오호츠크 선원 명부</span>
-      <span class="badge-mini">전체 9명 · 등급은 누적 수익률 기준</span>
-    </div>
-    <div id="crewList"></div>
   </section>
 
   <footer>
-    <div class="compass">🧭</div>
+    <div class="icons">
+      <svg width="20" height="20" viewBox="0 0 16 16"><use href="#m-anchor"/></svg>
+      <svg width="20" height="20" viewBox="0 0 16 16"><use href="#m-penguin"/></svg>
+      <svg width="20" height="20" viewBox="0 0 16 16"><use href="#m-seal"/></svg>
+      <svg width="20" height="20" viewBox="0 0 16 16"><use href="#m-polar"/></svg>
+      <svg width="20" height="20" viewBox="0 0 16 16"><use href="#m-orca"/></svg>
+    </div>
     <div>오호츠크해를 항해하는 9명의 선원들 · HFK 26여름 시즌</div>
-    <div style="margin-top: 4px; opacity: 0.7;">데이터 기준: 2026-04-27</div>
+    <div style="opacity: 0.7; margin-top: 4px;">데이터 기준: 2026-04-27</div>
   </footer>
 
 </div>
 
 <script>
-  // ========== Data ==========
+  // ===== Data =====
   const ROUNDS = [
-    { num: 1, date: '03-23', tickers: 'PL', pct: 11.20, status: 'done' },
-    { num: 2, date: '04-06', tickers: 'NVDA · GOOGL', pct: 6.57, status: 'done' },
-    { num: 3, date: '04-20', tickers: 'NKE', pct: -0.47, status: 'active' },
-    { num: 4, date: null, tickers: '미정', pct: null, status: 'future' }
+    { num: 1, date: '03-23', tickers: 'PL', pct: 11.20, status: 'done', summary: '플래닛 랩스로 첫 출항 — +11.20%' },
+    { num: 2, date: '04-06', tickers: 'NVDA · GOOGL', pct: 6.57, status: 'done', summary: '두 번째 항구에서 NVDA·GOOGL 동시 매수 — +6.57%' },
+    { num: 3, date: '04-20', tickers: 'NKE', pct: -0.47, status: 'active', summary: '나이키 해역 항해 중 — 보유, -0.47%' },
+    { num: 4, date: null, tickers: '미정', pct: null, status: 'future', summary: '다음 항구 미공개 — 정찰 중' }
   ];
 
   const MEMBERS = [
-    { name: '이수연', surname: '이', invested: 295.00,  value: 354.40,  profit: 59.40,  profitPct: 20.14, holdings: ['PL'], color: 'c-2' },
-    { name: '신선아', surname: '신', invested: 505.00,  value: 577.85,  profit: 72.85,  profitPct: 14.43, holdings: ['PL','NKE'], color: 'c-2' },
-    { name: '김하나', surname: '김', invested: 1121.61, value: 1212.21, profit: 90.60,  profitPct: 8.08,  holdings: ['PL','NVDA','GOOGL','NKE'], color: 'c-1' },
-    { name: '이주영', surname: '이', invested: 843.00,  value: 907.07,  profit: 64.07,  profitPct: 7.60,  holdings: ['PL','NVDA','GOOGL'], color: 'c-2' },
-    { name: '김재윤', surname: '김', invested: 2420.00, value: 2509.67, profit: 89.67,  profitPct: 3.71,  holdings: ['PL','NVDA','GOOGL','NKE'], color: 'c-1' },
-    { name: '윤다혜', surname: '윤', invested: 0,       value: 0,       profit: 0,      profitPct: 0,     holdings: [], color: 'c-3' },
-    { name: '정호준', surname: '정', invested: 0,       value: 0,       profit: 0,      profitPct: 0,     holdings: [], color: 'c-4' },
-    { name: '박지원', surname: '박', invested: 35.82,   value: 35.44,   profit: -0.38,  profitPct: -1.06, holdings: ['PL'], color: 'c-5' },
-    { name: '조진서', surname: '조', invested: 36.20,   value: 35.44,   profit: -0.76,  profitPct: -2.10, holdings: ['PL'], color: 'c-6' }
+    { name: '이수연', surname: '이', invested: 295.00,  value: 354.40,  profit: 59.40,  profitPct: 20.14, holdings: ['PL'] },
+    { name: '신선아', surname: '신', invested: 505.00,  value: 577.85,  profit: 72.85,  profitPct: 14.43, holdings: ['PL','NKE'] },
+    { name: '김하나', surname: '김', invested: 1121.61, value: 1212.21, profit: 90.60,  profitPct: 8.08,  holdings: ['PL','NVDA','GOOGL','NKE'] },
+    { name: '이주영', surname: '이', invested: 843.00,  value: 907.07,  profit: 64.07,  profitPct: 7.60,  holdings: ['PL','NVDA','GOOGL'] },
+    { name: '김재윤', surname: '김', invested: 2420.00, value: 2509.67, profit: 89.67,  profitPct: 3.71,  holdings: ['PL','NVDA','GOOGL','NKE'] },
+    { name: '박지원', surname: '박', invested: 35.82,   value: 35.44,   profit: -0.38,  profitPct: -1.06, holdings: ['PL'] },
+    { name: '조진서', surname: '조', invested: 36.20,   value: 35.44,   profit: -0.76,  profitPct: -2.10, holdings: ['PL'] },
+    { name: '윤다혜', surname: '윤', invested: 0,       value: 0,       profit: 0,      profitPct: 0,     holdings: [] },
+    { name: '정호준', surname: '정', invested: 0,       value: 0,       profit: 0,      profitPct: 0,     holdings: [] }
   ];
 
-  // ========== 등급 시스템 ==========
+  // ===== Levels =====
   function getLevel(m) {
-    if (m.invested === 0) return { emoji: '⚓', name: '항구 대기' };
+    if (m.invested === 0) return { sym: 'm-anchor',  name: '항구 대기', quote: '곧 합류할게요!' };
     const p = m.profitPct;
-    if (p < 0)    return { emoji: '🌊', name: '다음 항해 준비' };
-    if (p < 3)    return { emoji: '🐚', name: '조개껍데기 줍기' };
-    if (p < 7)    return { emoji: '🐟', name: '청어 낚시 성공' };
-    if (p < 12)   return { emoji: '🐧', name: '펭귄 사진가' };
-    if (p < 17)   return { emoji: '🦭', name: '바다표범 연구원' };
-    if (p < 20)   return { emoji: '🐻‍❄️', name: '북극곰 이웃' };
-    return            { emoji: '🐋', name: '범고래 선장' };
+    if (p < 0)    return { sym: 'm-wave',    name: '다음 항해 준비', quote: '잠깐 쉬었다 다시!' };
+    if (p < 3)    return { sym: 'm-shell',   name: '조개껍데기 줍기', quote: '바닷가 산책 중...' };
+    if (p < 7)    return { sym: 'm-fish',    name: '청어 낚시 성공', quote: '한 마리, 두 마리...' };
+    if (p < 12)   return { sym: 'm-penguin', name: '펭귄 사진가', quote: '오늘도 찰칵 📸' };
+    if (p < 17)   return { sym: 'm-seal',    name: '바다표범 연구원', quote: '차가운 바다도 즐거워요' };
+    if (p < 20)   return { sym: 'm-polar',   name: '북극곰 이웃', quote: '얼음 위에서 만나요' };
+    return            { sym: 'm-orca',    name: '범고래 선장', quote: '오호츠크해를 호령하라!' };
   }
 
-  // ========== 배지 ==========
-  const maxInvested = Math.max(...MEMBERS.map(m => m.invested));
+  // ===== Badges =====
   const sortedByPct = [...MEMBERS].filter(m => m.invested > 0).sort((a,b) => b.profitPct - a.profitPct);
   const sortedByProfit = [...MEMBERS].filter(m => m.invested > 0).sort((a,b) => b.profit - a.profit);
+  const maxInvested = Math.max(...MEMBERS.map(m => m.invested));
 
   function getBadges(m) {
-    const badges = [];
-    const pctRank = sortedByPct.findIndex(x => x.name === m.name);
-    const profitRank = sortedByProfit.findIndex(x => x.name === m.name);
-    if (pctRank === 0) badges.push({ class: 'gold',   text: '🥇 수익률 1위' });
-    if (pctRank === 1) badges.push({ class: 'silver', text: '🥈 수익률 2위' });
-    if (pctRank === 2) badges.push({ class: 'bronze', text: '🥉 수익률 3위' });
-    if (profitRank === 0) badges.push({ class: 'gold', text: '💰 수익금왕' });
-    if (m.invested === maxInvested) badges.push({ class: 'purple', text: '🐋 큰손' });
-    if (m.holdings.length >= 4) badges.push({ class: 'ice', text: '🌊 다양성 항해사' });
-    if (m.holdings.length >= 4 && m.holdings.includes('NKE')) badges.push({ class: 'ice', text: '🧊 개근 클럽' });
-    if (m.invested === 0) badges.push({ class: '', text: '⚓ 다음 회차 합류 예정' });
-    return badges;
+    const out = [];
+    const pi = sortedByPct.findIndex(x => x.name === m.name);
+    const fi = sortedByProfit.findIndex(x => x.name === m.name);
+    if (pi === 0) out.push({ c: 'gold', t: '🥇 수익률 1위' });
+    else if (pi === 1) out.push({ c: 'silver', t: '🥈 수익률 2위' });
+    else if (pi === 2) out.push({ c: 'bronze', t: '🥉 수익률 3위' });
+    if (fi === 0) out.push({ c: 'gold', t: '💰 수익금왕' });
+    if (m.invested === maxInvested) out.push({ c: 'purple', t: '🐋 큰손' });
+    if (m.holdings.length >= 4) out.push({ c: 'ice', t: '🌊 다양성 항해사' });
+    if (m.holdings.length >= 4 && m.holdings.includes('NKE')) out.push({ c: 'ice', t: '🧊 개근 클럽' });
+    return out;
   }
 
-  // ========== 항해 지도 ==========
+  // ===== Voyage Map =====
   function renderVoyageMap() {
     const map = document.getElementById('voyageMap');
     const xs = [10, 36, 64, 90];
-    const yTop = 50;
-    const path = `M ${xs[0]} ${yTop} Q ${(xs[0]+xs[1])/2} 30, ${xs[1]} ${yTop} T ${xs[2]} ${yTop} T ${xs[3]} ${yTop}`;
+    const path = `M ${xs[0]} 50 Q ${(xs[0]+xs[1])/2} 22, ${xs[1]} 50 T ${xs[2]} 50 T ${xs[3]} 50`;
     map.innerHTML = `
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="seaLine" x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0%" stop-color="#7c5cff" stop-opacity="0.8"/>
-            <stop offset="60%" stop-color="#34d399" stop-opacity="0.8"/>
-            <stop offset="100%" stop-color="#67e8f9" stop-opacity="0.4"/>
-          </linearGradient>
-        </defs>
-        <path d="${path}" stroke="url(#seaLine)" stroke-width="0.6" fill="none" stroke-dasharray="0.8 1" stroke-linecap="round"/>
+      <svg class="path-svg" viewBox="0 0 100 100" preserveAspectRatio="none" shape-rendering="crispEdges">
+        <path d="${path}" stroke="#fcd34d" stroke-width="0.7" fill="none" stroke-dasharray="2 1.5" stroke-linecap="square"/>
       </svg>
     `;
     ROUNDS.forEach((r, i) => {
@@ -1315,114 +1576,120 @@
       port.className = `port ${r.status}`;
       port.style.left = `${xs[i] + 0.5}%`;
       port.style.top = '38%';
-      const marker = r.status === 'done' ? '✓' : (r.status === 'active' ? '▶' : r.num);
+      port.dataset.round = r.num;
+      const inner = r.status === 'done' ? '✓' : (r.status === 'active' ? '<svg width="32" height="32" viewBox="0 0 16 16"><use href="#m-anchor"/></svg>' : r.num);
       const pctClass = r.pct == null ? '' : (r.pct >= 0 ? 'pos' : 'neg');
       const pctText = r.pct == null ? '' : `<div class="pct ${pctClass}">${r.pct >= 0 ? '+' : ''}${r.pct.toFixed(2)}%</div>`;
       port.innerHTML = `
-        <div class="marker">${marker}</div>
-        <div class="meta">${r.num}회차${r.date ? ' · ' + r.date : ''}</div>
-        <div class="ticker">${r.tickers}</div>
-        ${pctText}
+        <div class="marker">${inner}</div>
+        <div class="label-pill">
+          <div class="meta">${r.num}회차${r.date ? ' · ' + r.date : ''}</div>
+          <div class="ticker">${r.tickers}</div>
+          ${pctText}
+        </div>
       `;
+      port.addEventListener('click', () => switchRound(r.num));
       map.appendChild(port);
     });
-    // 항해 중인 배 (3회차 위에)
+    // 픽셀 배 (3회차 위에)
     const ship = document.createElement('div');
-    ship.className = 'ship';
-    ship.textContent = '⛵';
+    ship.className = 'ship-pixel';
+    ship.id = 'ship';
+    ship.innerHTML = '<svg viewBox="0 0 16 16" width="56" height="56"><use href="#m-ship"/></svg>';
     ship.style.left = `${xs[2] + 0.5}%`;
     ship.style.top = '38%';
+    ship.title = '클릭해서 어디까지 왔나 확인';
+    ship.addEventListener('click', () => {
+      showToast('⛵ 3번째 항구 — 나이키 해역 항해 중입니다');
+    });
     map.appendChild(ship);
   }
 
-  // ========== TOP lists ==========
-  function renderTopList(elId, sorted, valueFn, colorFn, maxVal) {
-    const el = document.getElementById(elId);
-    const medals = ['🥇','🥈','🥉'];
-    const html = MEMBERS.map(m => m).sort((a, b) => sorted(b) - sorted(a)).map((m, i) => {
-      const val = valueFn(m);
-      const w = maxVal > 0 ? Math.max(2, (Math.abs(sorted(m)) / maxVal) * 100) : 2;
-      const color = colorFn(m);
-      const rankCls = i < 3 ? `medal-${i+1}` : '';
-      const rank = i < 3 ? medals[i] : (i+1);
-      return `
-        <div class="top-row">
-          <div class="top-rank ${rankCls}">${rank}</div>
-          <div class="member-cell"><div class="avatar ${m.color}">${m.surname}</div>${m.name}</div>
-          <div class="top-bar"><span style="background:${color};" data-w="${w}"></span></div>
-          <div class="top-val" style="color:${sorted(m) >= 0 ? '' : 'var(--loss)'}">${val}</div>
-        </div>
-      `;
-    }).join('');
-    el.innerHTML = html;
+  // ===== Round switching =====
+  function switchRound(n) {
+    document.querySelectorAll('.round-tab').forEach(t => {
+      t.classList.toggle('active', parseInt(t.dataset.round) === n);
+    });
+    const r = ROUNDS.find(x => x.num === n);
+    const q = document.getElementById('questSection');
+    q.style.opacity = (n === 3) ? '1' : '0.6';
+    showToast(`🗺️ ${r.num}회차 — ${r.summary}`);
   }
 
-  // ========== Crew List ==========
+  // ===== Crew Grid =====
   function renderCrew() {
-    const el = document.getElementById('crewList');
+    const el = document.getElementById('crewGrid');
     const sorted = [...MEMBERS].sort((a, b) => {
       if (a.invested === 0 && b.invested > 0) return 1;
       if (b.invested === 0 && a.invested > 0) return -1;
       return b.profitPct - a.profitPct;
     });
-    const maxAbsPct = Math.max(...MEMBERS.map(m => Math.abs(m.profitPct))) || 1;
+    const maxAbs = Math.max(...MEMBERS.map(m => Math.abs(m.profitPct))) || 1;
     el.innerHTML = sorted.map((m, i) => {
       const lvl = getLevel(m);
       const badges = getBadges(m);
-      const rank = i + 1;
-      const rankCls = rank <= 3 && m.invested > 0 ? `rank-${rank}` : '';
-      const medalEmoji = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : '';
-      const rankNum = m.invested > 0 ? rank : '—';
+      const rank = m.invested > 0 ? i + 1 : '—';
+      const rankCls = m.invested > 0 && i < 3 ? `rank-${i+1}` : '';
       const skipCls = m.invested === 0 ? 'skip' : '';
+      const medal = m.invested > 0 && i === 0 ? '🥇' : (m.invested > 0 && i === 1 ? '🥈' : (m.invested > 0 && i === 2 ? '🥉' : ''));
       const pctCls = m.profitPct > 0 ? 'gain' : m.profitPct < 0 ? 'loss' : 'zero';
-      const barW = (Math.abs(m.profitPct) / maxAbsPct) * 100;
-      const barCls = m.profitPct < 0 ? 'loss' : 'gain';
-      const profitSign = m.profit > 0 ? '+' : m.profit < 0 ? '-' : '+';
-      const profitAbs = Math.abs(m.profit).toFixed(2);
+      const barCls = m.profitPct > 0 ? 'gain' : m.profitPct < 0 ? 'loss' : 'zero';
+      const barW = (Math.abs(m.profitPct) / maxAbs) * 100;
+      const pctSign = m.profitPct > 0 ? '+' : '';
+      const moneySign = m.profit > 0 ? '+' : m.profit < 0 ? '-' : '+';
       const tickerChips = m.holdings.length > 0
         ? m.holdings.map(t => `<span class="ticker-chip">${t}</span>`).join('')
-        : '<span class="ticker-chip">미보유</span>';
-      const pctSign = m.profitPct > 0 ? '+' : m.profitPct < 0 ? '' : '+';
+        : '<span class="ticker-chip empty">미보유</span>';
+      const badgeHtml = badges.length > 0
+        ? badges.map(b => `<span class="badge ${b.c}">${b.t}</span>`).join('')
+        : '<span class="badge">⚓ 다음 회차 합류 예정</span>';
+      const profitColor = m.profit > 0 ? 'var(--gain)' : m.profit < 0 ? 'var(--loss)' : 'var(--text-dim)';
+      const pctColor = m.profitPct > 0 ? 'var(--gain)' : m.profitPct < 0 ? 'var(--loss)' : 'var(--text-dim)';
       return `
-        <div class="crew-card ${rankCls} ${skipCls}">
-          <div class="crew-rank ${rank<=3 && m.invested>0 ? 'medal-'+rank : ''}">
-            ${rankNum}
-            ${medalEmoji ? `<span class="medal-emoji">${medalEmoji}</span>` : ''}
-          </div>
-          <div class="member-cell">
-            <div class="avatar ${m.color}" style="width:42px; height:42px; font-size:16px;">${m.surname}</div>
-            <div class="crew-info">
-              <div class="name-row">
-                <span class="name">${m.name}</span>
-                <span class="level">${lvl.emoji} ${lvl.name}</span>
+        <div class="crew-card ${rankCls} ${skipCls}" data-name="${m.name}">
+          <div class="crew-card-inner">
+            <div class="crew-face crew-front">
+              ${medal ? `<div class="medal">${medal}</div>` : ''}
+              <div class="rank-corner">#${rank}</div>
+              <div class="crew-mascot-wrap">
+                <svg viewBox="0 0 16 16"><use href="#${lvl.sym}"/></svg>
               </div>
-              <div style="font-size:12px; color: var(--text-faint);">투자 $${m.invested.toFixed(2)} · 평가 $${m.value.toFixed(2)}</div>
-              <div class="badges">${badges.map(b => `<span class="badge ${b.class}">${b.text}</span>`).join('')}</div>
+              <div class="name">${m.name}</div>
+              <div class="level-pill"><span>${lvl.name}</span></div>
+              <div class="pct-row">
+                <div class="pct ${pctCls}">${pctSign}${m.profitPct.toFixed(2)}%</div>
+                <div class="money">${moneySign}$${Math.abs(m.profit).toFixed(2)}</div>
+              </div>
+              <div class="hp-bar"><span class="hp-fill ${barCls}" data-w="${barW}"></span></div>
+              <div class="flip-hint">FLIP &gt;</div>
             </div>
-          </div>
-          <div class="crew-bar">
-            <div class="bar-track"><span class="bar-fill ${barCls}" data-w="${barW}"></span></div>
-            <div class="bar-meta">
-              <span>누적 수익률</span>
-              <div class="ticker-chips">${tickerChips}</div>
+            <div class="crew-face crew-back">
+              <h3>${m.name} <span class="small">${lvl.name}</span></h3>
+              <div class="stat-row"><span>총 투자금</span><b>$${m.invested.toFixed(2)}</b></div>
+              <div class="stat-row"><span>현재 평가금</span><b>$${m.value.toFixed(2)}</b></div>
+              <div class="stat-row"><span>수익금</span><b style="color:${profitColor};">${moneySign}$${Math.abs(m.profit).toFixed(2)}</b></div>
+              <div class="stat-row"><span>수익률</span><b style="color:${pctColor};">${pctSign}${m.profitPct.toFixed(2)}%</b></div>
+              <div class="holdings">${tickerChips}</div>
+              <div class="badges">${badgeHtml}</div>
+              <div class="quote">"${lvl.quote}"</div>
             </div>
-          </div>
-          <div class="crew-numbers">
-            <div class="pct ${pctCls}">${pctSign}${m.profitPct.toFixed(2)}%</div>
-            <div class="money">${profitSign}$${profitAbs}</div>
           </div>
         </div>
       `;
     }).join('');
+
+    document.querySelectorAll('.crew-card').forEach(card => {
+      card.addEventListener('click', () => card.classList.toggle('flipped'));
+    });
   }
 
-  // ========== Count up animation ==========
+  // ===== Count up =====
   function animateNumber(el) {
     const target = parseFloat(el.dataset.count);
     const prefix = el.dataset.prefix || '';
     const suffix = el.dataset.suffix || '';
     const start = performance.now();
-    const dur = 1400;
+    const dur = 1200;
     function frame(t) {
       const p = Math.min((t - start) / dur, 1);
       const eased = 1 - Math.pow(1 - p, 3);
@@ -1434,64 +1701,107 @@
     requestAnimationFrame(frame);
   }
 
-  // ========== Bar fill animation ==========
   function fillBars() {
     requestAnimationFrame(() => {
-      document.querySelectorAll('[data-w]').forEach(b => {
-        b.style.width = b.dataset.w + '%';
-      });
+      document.querySelectorAll('[data-w]').forEach(b => { b.style.width = b.dataset.w + '%'; });
     });
   }
 
-  // ========== Init ==========
+  // ===== Bubbles =====
+  function spawnBubbles() {
+    const stage = document.getElementById('bubbles');
+    const count = 18;
+    for (let i = 0; i < count; i++) {
+      const b = document.createElement('div');
+      const sz = Math.random();
+      b.className = 'bubble' + (sz < 0.3 ? ' s' : sz > 0.8 ? ' l' : '');
+      b.style.left = Math.random() * 100 + '%';
+      b.style.animationDuration = (12 + Math.random() * 18) + 's';
+      b.style.animationDelay = (-Math.random() * 20) + 's';
+      stage.appendChild(b);
+    }
+  }
+
+  // ===== Toast =====
+  let toastTimer = null;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  // ===== Confetti =====
+  function confetti() {
+    const stage = document.getElementById('confettiStage');
+    const colors = ['#fcd34d','#a78bfa','#f472b6','#7dd3fc','#4ade80','#fb7185','#ff9e64'];
+    for (let i = 0; i < 50; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.left = `${50 + (Math.random() - 0.5) * 30}%`;
+      c.style.top = '20%';
+      const dx = (Math.random() - 0.5) * 800;
+      const dy = (Math.random() * 600) + 200;
+      const rot = (Math.random() - 0.5) * 720;
+      c.animate([
+        { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
+        { transform: `translate(${dx}px, ${dy}px) rotate(${rot}deg)`, opacity: 0 }
+      ], { duration: 1800 + Math.random() * 800, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'forwards' });
+      stage.appendChild(c);
+      setTimeout(() => c.remove(), 3000);
+    }
+  }
+
+  // ===== Compass =====
+  function spinCompass() {
+    const btn = document.getElementById('compassBtn');
+    btn.classList.add('spinning');
+    setTimeout(() => btn.classList.remove('spinning'), 1500);
+    const cards = document.querySelectorAll('.crew-card:not(.skip)');
+    if (cards.length === 0) return;
+    const pick = cards[Math.floor(Math.random() * cards.length)];
+    document.querySelectorAll('.crew-card.highlighted').forEach(c => c.classList.remove('highlighted'));
+    setTimeout(() => {
+      pick.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      pick.classList.add('highlighted');
+      const name = pick.dataset.name;
+      const m = MEMBERS.find(x => x.name === name);
+      const lvl = getLevel(m);
+      showToast(`🧭 오늘의 선원 → ${m.name} · ${lvl.name}`);
+      setTimeout(() => pick.classList.remove('highlighted'), 3500);
+    }, 600);
+  }
+
+  // ===== News Toggle =====
+  function setupNewsToggle() {
+    const btn = document.getElementById('newsToggle');
+    const list = document.getElementById('newsList');
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('open');
+      list.classList.toggle('open');
+      const open = btn.classList.contains('open');
+      btn.querySelector('span').textContent = open ? '📜 항해일지 접기' : '📜 항해일지 펼치기 · 주요 뉴스 4건';
+    });
+  }
+
+  // ===== Init =====
   document.addEventListener('DOMContentLoaded', () => {
+    spawnBubbles();
     renderVoyageMap();
     renderCrew();
-
-    const sortedPctMembers = [...MEMBERS].filter(m => m.invested > 0);
-    const maxPct = Math.max(...MEMBERS.map(m => Math.abs(m.profitPct))) || 1;
-    const maxProfit = Math.max(...MEMBERS.map(m => Math.abs(m.profit))) || 1;
-
-    renderTopList(
-      'topPctList',
-      m => m.profitPct,
-      m => `${m.profitPct >= 0 ? '+' : ''}${m.profitPct.toFixed(2)}%`,
-      m => m.profitPct >= 0 ? '#34d399' : '#f87171',
-      maxPct
-    );
-    renderTopList(
-      'topProfitList',
-      m => m.profit,
-      m => `${m.profit >= 0 ? '+' : '-'}$${Math.abs(m.profit).toFixed(2)}`,
-      m => m.profit >= 0 ? '#fbbf24' : '#f87171',
-      maxProfit
-    );
-
+    setupNewsToggle();
     document.querySelectorAll('[data-count]').forEach(animateNumber);
     setTimeout(fillBars, 200);
-
-    // Round tab interaction (visual only — 1·2회차는 추가 정보 미수집)
-    document.querySelectorAll('.round-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.round-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        const r = parseInt(tab.dataset.round);
-        const round = ROUNDS.find(x => x.num === r);
-        const detail = document.getElementById('roundDetail');
-        if (r !== 3) {
-          if (r === 4) {
-            detail.style.opacity = '0.55';
-            detail.querySelector('h2').textContent = `4회차 — 미정 (다음 항구 미공개)`;
-          } else {
-            detail.style.opacity = '1';
-            detail.querySelector('h2').textContent = `${r}회차 ${round.tickers} — ${round.date} · 결과 ${round.pct >= 0 ? '+' : ''}${round.pct.toFixed(2)}%`;
-          }
-        } else {
-          detail.style.opacity = '1';
-          detail.querySelector('h2').textContent = '3회차 선정 종목 — 2026-04-20';
-        }
-      });
+    document.getElementById('compassBtn').addEventListener('click', spinCompass);
+    document.querySelectorAll('.round-tab').forEach(t => {
+      t.addEventListener('click', () => switchRound(parseInt(t.dataset.round)));
     });
+    setTimeout(() => {
+      confetti();
+      showToast('⚓ 어서오세요, 선원! 범고래 선장 이수연이 기다립니다');
+    }, 600);
   });
 </script>
 
